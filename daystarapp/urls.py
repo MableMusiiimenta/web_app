@@ -2,7 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.baby, name="baby"),
+    path("", views.index, name="index"),
+    path('board.html', views.board, name='board'),
+    path("baby/", views.baby, name="baby"),
     path("<int:id>/", views.view_baby, name="view_baby"),
     path("add/", views.add, name="add"),
     path("edit/<int:id>/", views.edit, name="edit"),

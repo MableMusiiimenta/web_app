@@ -11,6 +11,21 @@ from.forms import SitterForm
 
 # Create your views here.
 
+def index(request):
+    
+    images = [
+        '/static/images/badge.png',
+        '/static/images/two.jpg',
+        '/static/images/sitting.jpg',
+        '/static/images/play.jpg',
+        '/static/images/dimple.jpg',
+    ]
+    return render(request, 'index.html', {'images': images})
+
+def board(request):
+    return render(request, 'board.html')
+
+
 def baby(request):
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
 
