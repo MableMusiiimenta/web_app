@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import JsonResponse
 
 from .models import Baby
 from .forms import BabyForm
@@ -10,6 +11,27 @@ from.forms import SitterForm
 
 
 # Create your views here.
+# views.py
+
+
+def dashboard_data(request):
+    # Logic to fetch dashboard data
+    data = {
+        'attendance': 150,
+        'payments_received': 'UGX 50,000',
+        # Add more dashboard data as needed
+    }
+    return JsonResponse(data)
+
+def sitters_data(request):
+    # Logic to fetch sitters data
+    data = {
+        'sitter_count': 10,
+        'sitter_list': ['Sitter 1', 'Sitter 2', 'Sitter 3'],
+        # Add more sitter data as needed
+    }
+    return JsonResponse(data)
+# Define similar views for other sidebar items
 
 def index(request):
     
@@ -24,6 +46,9 @@ def index(request):
 
 def board(request):
     return render(request, 'board.html')
+
+def dashb(request):
+    return render(request, 'dashb.html')
 
 
 def baby(request):

@@ -13,14 +13,30 @@
     
 </head>
 <body>
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">
-            <img src="{% static 'images/badge.png' %}" alt="Logo" width="100" height="100" class="d-inline-block align-text-top">
-            Daystar Daycare
-          </a>
-        </div>
-      </nav>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <div id="badge";>
+                    <img src="{% static 'images/badge.png' %}">"
+                    </div>
+    
+                    <div>
+                        <h1>DAY-STAR DAYCARE CENTRE</h1>
+                    </div>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        SIGN IN
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    
     <div class = "container">
     <section>
     <div class="form">
@@ -46,7 +62,7 @@
                 <input type="checkbox" class="form-check-input" id="checkboxCheck1">
                 <label class="form-check-label" for="checkboxCheck1"><i>Remember Me.</i></label>
             </div><br><br>
-            <button type="submit" class="btn btn-primary" style="width: 200px; height: 50px; border-radius: 7px; font-size: 30px;">Submit</button>
+            <a href="{% url 'dashb' %}" class="btn" style="width: 200px; height: 50px; border-radius: 7px; font-size: 30px; background-color: rgb(1, 15, 38); color:aliceblue">Submit</a>
         </form>
         <!-- "check your email to confirm your account" feature to be added after learning about it-->
     </div>

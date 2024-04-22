@@ -1,0 +1,48 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+body{
+    font-size: 30px;
+    background-color: #e95a37;
+}
+
+
+form{
+    text-align: center;
+    width: 500px;
+    height: 700px;
+    padding: 40px;
+    padding-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+    background-color: rgb(1, 15, 38);
+}
+.form-control{
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.name{
+    width: 300px;
+}
+
+.email{
+    width: 250px;
+}
+
+input[type = "checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+label{
+    color: aliceblue;
+}
+a{
+    color: aliceblue;
+    text-decoration: none;
+}
