@@ -1,37 +1,33 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import JsonResponse
 
 from .models import Baby
 from .forms import BabyForm
-
-from .models import Sitter
+from .models import Sitter, SitterPayment
 from.forms import SitterForm
+from .forms import SitterPaymentForm
+from .models import In_school
+from .models import Babyfee
+from .forms import BabyfeeForm
+from .models import At_school
+from .forms import At_schoolForm
+from .forms import In_schoolForm
+from .models import Supplies
+from .forms import SuppliesForm
+from .models import Doll, DollSale
+from .forms import DollForm
+from .forms import DollSaleForm
+
+
 
 
 # Create your views here.
-# views.py
 
 
-def dashboard_data(request):
-    # Logic to fetch dashboard data
-    data = {
-        'attendance': 150,
-        'payments_received': 'UGX 50,000',
-        # Add more dashboard data as needed
-    }
-    return JsonResponse(data)
 
-def sitters_data(request):
-    # Logic to fetch sitters data
-    data = {
-        'sitter_count': 10,
-        'sitter_list': ['Sitter 1', 'Sitter 2', 'Sitter 3'],
-        # Add more sitter data as needed
-    }
-    return JsonResponse(data)
-# Define similar views for other sidebar items
+
 
 def index(request):
     
@@ -49,7 +45,10 @@ def board(request):
 
 def dashb(request):
     return render(request, 'dashb.html')
-
+def serve_js(request):
+    with open('static/script.js', 'rb') as f:
+        response = HttpResponse(f.read(), content_type='application/javascript')
+    return response
 
 def baby(request):
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
@@ -69,13 +68,8 @@ def add(request):
             new_age = form.cleaned_data["age"]
             new_location = form.cleaned_data["location"]
             new_parent_name = form.cleaned_data["parent_name"]
-            new_bringer_name = form.cleaned_data["bringer_name"]
-            new_period_of_stay = form.cleaned_data["period_of_stay"]
-            new_time_in = form.cleaned_data["time_in"]
-            new_fee_in_ugx = form.cleaned_data["fee_in_ugx"]
-            new_taker_name = form.cleaned_data["taker_name"]
-            new_time_out = form.cleaned_data["time_out"]
-            new_comment = form.cleaned_data["comment"]
+            new_parent_contact = form.cleaned_data["parent_contact"]
+       
 
             new_baby = Baby(
                 first_name=new_first_name,
@@ -84,13 +78,7 @@ def add(request):
                 age=new_age,
                 location=new_location,
                 parent_name=new_parent_name,
-                bringer_name=new_bringer_name,
-                period_of_stay=new_period_of_stay,
-                time_in=new_time_in,
-                fee_in_ugx=new_fee_in_ugx,
-                taker_name=new_taker_name,
-                time_out=new_time_out,
-                comment=new_comment
+                parent_contact=new_parent_contact,
             )
             new_baby.save()
             return render(request, "babies/add.html", {
@@ -149,8 +137,6 @@ def adds(request):
             new_religion = form.cleaned_data["religion"]
             new_educ_level = form.cleaned_data["educ_level"]
             new_s_number = form.cleaned_data["s_number"]
-            new_avail_status = form.cleaned_data["avail_status"]
-            new_payment = form.cleaned_data["payment"]
             new_s_contact = form.cleaned_data["s_contact"]
 
             new_sitter = Sitter(
@@ -162,10 +148,7 @@ def adds(request):
                 religion=new_religion,
                 educ_level=new_educ_level,
                 s_number=new_s_number,
-                avail_status=new_avail_status,
-                payment=new_payment,
                 s_contact=new_s_contact
-                
             )
             new_sitter.save()
             return render(request, "sitters/adds.html", {
@@ -202,3 +185,35 @@ def deletes(request, id):
         sitter.delete()
     return HttpResponseRedirect(reverse("sitter"))
 
+def calculate_payment(request, baby_id):
+    baby = Baby.objects.get(id=baby_id)
+    baby.calculate_payment()
+    baby.save()
+    return render(request, 'payment_confirmation.html', {'baby': baby})
+
+def view_payment_history(request):
+    payments = Baby.objects.filter(payment_date__isnull=False)
+    return render(request, 'payment_history.html', {'payments': payments})
+
+def handle_monthly_payments(request):
+    return render(request, 'monthly_payments.html')
+
+def handle_sitter_payment(request, sitter_id):
+    if request.method == 'POST':
+        attendance_date = request.POST.get('attendance_date')
+        number_of_babies = int(request.POST.get('number_of_babies'))
+        sitter = Sitter.objects.get(id=sitter_id)
+        
+        # Calculate payment amount
+        payment_amount = number_of_babies * 3000
+        
+        # Create a new SitterPayment instance and save it
+        sitter_payment = SitterPayment(sitter=sitter, attendance_date=attendance_date, number_of_babies=number_of_babies, payment_amount=payment_amount)
+        sitter_payment.save()
+        
+        # Redirect to a confirmation page
+        return redirect('payment_confirmation', payment_id=sitter_payment.id)
+    else:
+        # Handle GET request (display the form)
+        sitter = Sitter.objects.get(id=sitter_id)
+        return render(request, 'sitter_payment_form.html', {'sitter': sitter})

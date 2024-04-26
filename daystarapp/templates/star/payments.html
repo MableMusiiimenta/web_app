@@ -1,0 +1,29 @@
+{% extends 'babies/base.html' %}
+{% block body %}
+<form action="{% url 'handle_payment' baby_id=baby.id %}" method="post">
+    {% csrf_token %}
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" id="payment_method">
+      <option value="half_day">Half Day (10,000 UGX)</option>
+      <option value="full_day">Full Day (15,000 UGX)</option>
+      <option value="monthly">Monthly Payment</option>
+    </select>
+    <br>
+    <label for="payment_amount">Payment Amount:</label>
+    <input type="number" name="payment_amount" id="payment_amount" required>
+    <br>
+    <button type="submit">Submit Payment</button>
+  </form>
+  
+  <form action="{% url 'handle_sitter_payment' sitter_id=sitter.id %}" method="post">
+    {% csrf_token %}
+    <label for="attendance_date">Attendance Date:</label>
+    <input type="date" name="attendance_date" id="attendance_date" required>
+    <br>
+    <label for="number_of_babies">Number of Babies Attended:</label>
+    <input type="number" name="number_of_babies" id="number_of_babies" min="1" required>
+    <br>
+    <button type="submit">Calculate Payment</button>
+  </form>
+  
+{% endblock %}
