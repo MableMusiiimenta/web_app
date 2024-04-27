@@ -14,8 +14,8 @@ from .forms import BabyfeeForm
 from .models import At_school
 from .forms import At_schoolForm
 from .forms import In_schoolForm
-from .models import Supplies
-from .forms import SuppliesForm
+from .models import Supply
+from .forms import SupplyForm
 from .models import Doll, DollSale
 from .forms import DollForm
 from .forms import DollSaleForm
@@ -114,7 +114,318 @@ def delete(request, id):
         baby = Baby.objects.get(pk=id)
         baby.delete()
     return HttpResponseRedirect(reverse("baby"))
+# At_school
 
+def at_school(request):
+    return render(request, "at_schools/at_school.html", {"at_schools": At_school.objects.all()} )
+
+def view_at_school(request, id):
+    at_school = At_school.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("at_school"))
+
+def addd(request):
+    if request.method == "POST":
+        form = At_schoolForm(request.POST)
+        if form.is_valid():
+            new_arrival_time = form.cleaned_data["arrival_time"]
+            new_bringer_name = form.cleaned_data["bringer_name"]
+            new_period_of_stay = form.cleaned_data["period_of_stay"]
+            new_l_name = form.cleaned_data["l_name"]
+            new_departure_time = form.cleaned_data["departure_time"]
+            new_taker_name = form.cleaned_data["taker_name"]
+            new_comment = form.cleaned_data["comment"]
+       
+
+            new_at_school = At_school(
+                arrival_time=new_arrival_time,
+                bringer_name=new_bringer_name,
+                period_of_stay=new_period_of_stay,
+                l_name=new_l_name,
+                departure_time=new_departure_time,
+                taker_name=new_taker_name,
+                comment=new_comment,
+            )
+            new_at_school.save()
+            return render(request, "at_schools/addd.html", {
+                "form": At_schoolForm(),
+                "success": True
+            })
+    else:
+        form = At_schoolForm()
+
+    return render(request, "at_schools/addd.html", {
+        "form": form
+    })
+
+def editt(request, id):
+    if request.method == "POST":
+        at_school = At_school.objects.get(pk=id)
+        form = At_schoolForm(request.POST, instance=at_school)
+        if form.is_valid():
+            form.save()
+            return render(request, "at_schools/editt.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        at_school = At_school.objects.get(pk=id)
+        form = At_schoolForm(instance=at_school)
+    return render(request, "at_schools/editt.html", {
+            "form": form
+        })
+
+def deletee(request, id):
+    if request.method == "POST":
+        at_school = At_school.objects.get(pk=id)
+        at_school.delete()
+    return HttpResponseRedirect(reverse("at_school"))
+
+
+
+#in_school view
+def in_school(request):
+    return render(request, "in_schools/in_school.html", {"in_schools": In_school.objects.all()} )
+
+def view_in_school(request, id):
+    in_school = In_school.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("in_school"))
+
+def adddd(request):
+    if request.method == "POST":
+        form = In_schoolForm(request.POST)
+        if form.is_valid():
+            new_l_name = form.cleaned_data["l_name"]
+            new_avail_status = form.cleaned_data["avail_status"]
+            new_babies_attd = form.cleaned_data["babies_attd"]
+            new_payment = form.cleaned_data["payment"]
+
+            new_in_school = In_school(
+                l_name=new_l_name,
+                avail_status=new_avail_status,
+                babies_attd=new_babies_attd,
+                payment=new_payment,
+            )
+            new_in_school.save()
+            return render(request, "in_schools/adddd.html", {
+                "form": In_schoolForm(),
+                "success": True
+            })
+    else:
+        form = In_schoolForm()
+
+    return render(request, "in_schools/adddd.html", {
+        "form": form
+    })
+
+def edittt(request, id):
+    if request.method == "POST":
+        in_school = In_school.objects.get(pk=id)
+        form = In_schoolForm(request.POST, instance=in_school)
+        if form.is_valid():
+            form.save()
+            return render(request, "in_schools/edittt.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        in_school = In_school.objects.get(pk=id)
+        form = In_schoolForm(instance=in_school)
+    return render(request, "in_schools/edittt.html", {
+            "form": form
+        })
+
+def deleteee(request, id):
+    if request.method == "POST":
+        in_school = In_school.objects.get(pk=id)
+        in_school.delete()
+    return HttpResponseRedirect(reverse("in_school"))
+
+
+
+def supply(request):
+    return render(request, "supplies/supply.html", {"supplies": Supply.objects.all()} )
+
+def view_supply(request, id):
+    baby = Supply.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("supply"))
+
+
+def addds(request):
+    if request.method == "POST":
+        form = SupplyForm(request.POST)
+        if form.is_valid():
+            new_item = form.cleaned_data["item"]
+            new_qty_stocked = form.cleaned_data["qty_stocked"]
+            new_date_stocked = form.cleaned_data["date_stocked"]
+            new_qty_on_hand = form.cleaned_data["qty_on_hand"]
+            new_consumed_today = form.cleaned_data["consumed_today"]
+            new_qty_left = form.cleaned_data["qty_left"]
+            new_expiry_date = form.cleaned_data["expiry_date"]
+       
+
+            new_supply = Supply(
+                item=new_item,
+                qty_stocked=new_qty_stocked,
+                date_stocked=new_date_stocked,
+                qty_on_hand=new_qty_on_hand,
+                consumed_today=new_consumed_today,
+                qty_left=new_qty_left,
+                expiry_date=new_expiry_date,
+            )
+            new_supply.save()
+            return render(request, "supplies/addds.html", {
+                "form": SupplyForm(),
+                "success": True
+            })
+    else:
+        form = SupplyForm()
+
+    return render(request, "supplies/addds.html", {
+        "form": form
+    })
+
+def editts(request, id):
+    if request.method == "POST":
+        supply = Supply.objects.get(pk=id)
+        form = SupplyForm(request.POST, instance=supply)
+        if form.is_valid():
+            form.save()
+            return render(request, "supplies/editts.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        supply = Supply.objects.get(pk=id)
+        form = SupplyForm(instance=supply)
+    return render(request, "supplies/editts.html", {
+            "form": form
+        })
+
+def deletees(request, id):
+    if request.method == "POST":
+        supply = Supply.objects.get(pk=id)
+        supply.deletees()
+    return HttpResponseRedirect(reverse("supply"))
+
+def doll(request):
+    return render(request, "dolls/doll.html", {"dolls": Doll.objects.all()} )
+
+def view_doll(request, id):
+    doll = Doll.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("doll"))
+
+
+def adddds(request):
+    if request.method == "POST":
+        form = DollForm(request.POST)
+        if form.is_valid():
+            new_name = form.cleaned_data["name"]
+            new_brand = form.cleaned_data["brand"]
+            new_color = form.cleaned_data["color"]
+            new_price = form.cleaned_data["price"]
+            new_qty_in_stock = form.cleaned_data["qty_in_stock"]
+          
+            new_doll = Doll(
+                name=new_name,
+                brand=new_brand,
+                color=new_color,
+                price=new_price,
+                qty_in_stock=new_qty_in_stock,
+            )
+            new_doll.save()
+            return render(request, "dolls/adddds.html", {
+                "form": DollForm(),
+                "success": True
+            })
+    else:
+        form = DollForm()
+
+    return render(request, "dolls/adddds.html", {
+        "form": form
+    })
+
+def edittts(request, id):
+    if request.method == "POST":
+        doll = Doll.objects.get(pk=id)
+        form = DollForm(request.POST, instance=doll)
+        if form.is_valid():
+            form.save()
+            return render(request, "dolls/edittts.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        doll = Doll.objects.get(pk=id)
+        form = DollForm(instance=doll)
+    return render(request, "dolls/edittts.html", {
+            "form": form
+        })
+
+def deleteees(request, id):
+    if request.method == "POST":
+        doll = Doll.objects.get(pk=id)
+        doll.deleteees()
+    return HttpResponseRedirect(reverse("doll"))
+
+def dollsale(request):
+    return render(request, "dollsales/dollsale.html", {"dollsales": DollSale.objects.all()} )
+
+def view_dollsale(request, id):
+    dollsale = DollSale.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("dollsale"))
+
+
+def addddd(request):
+    if request.method == "POST":
+        form = DollSaleForm(request.POST)
+        if form.is_valid():
+            new_doll = form.cleaned_data["doll"]
+            new_sale_date = form.cleaned_data["sale_date"]
+            new_l_name = form.cleaned_data["l_name"]
+            new_price = form.cleaned_data["price"]
+            new_quantity_sold = form.cleaned_data["quantity_sold"]
+          
+            new_dollsale = DollSale(
+                doll=new_doll,
+                sale_date=new_sale_date,
+                l_name=new_l_name,
+                price=new_price,
+                quantity_sold=new_quantity_sold,
+            )
+            new_dollsale.save()
+            return render(request, "dollsales/addddd.html", {
+                "form": DollSaleForm(),
+                "success": True
+            })
+    else:
+        form = DollSaleForm()
+
+    return render(request, "dollsales/addddd.html", {
+        "form": form
+    })
+
+def editttt(request, id):
+    if request.method == "POST":
+        dollsale = DollSale.objects.get(pk=id)
+        form = DollSaleForm(request.POST, instance=dollsale)
+        if form.is_valid():
+            form.save()
+            return render(request, "dollsales/editttt.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        dollsale = DollSale.objects.get(pk=id)
+        form = DollSaleForm(instance=dollsale)
+    return render(request, "dollsales/editttt.html", {
+            "form": form
+        })
+
+def deleteeee(request, id):
+    if request.method == "POST":
+        doll = DollSale.objects.get(pk=id)
+        doll.deleteeee()
+    return HttpResponseRedirect(reverse("dollsale"))
 
 # Sitter view
 
@@ -185,11 +496,18 @@ def deletes(request, id):
         sitter.delete()
     return HttpResponseRedirect(reverse("sitter"))
 
-def calculate_payment(request, baby_id):
-    baby = Baby.objects.get(id=baby_id)
-    baby.calculate_payment()
-    baby.save()
-    return render(request, 'payment_confirmation.html', {'baby': baby})
+#babyfee
+def babyfee(request):
+    return render(request, "babyfees/babyfee.html", {"babyfees": Babyfee.objects.all()} )
+
+def view_babyfee(request, id):
+    babyfee = Babyfee.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("babyfee"))
+
+def calculate_payment(request, babyfee_id):
+    babyfee = Babyfee.objects.get(id=babyfee_id)
+    payment_amount = babyfee.calculate_payment_amount()
+    return render(request, 'payment_amount.html', {'babyfee': babyfee, 'payment_amount': payment_amount})
 
 def view_payment_history(request):
     payments = Baby.objects.filter(payment_date__isnull=False)

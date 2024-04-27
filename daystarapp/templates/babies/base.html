@@ -28,13 +28,22 @@
                 <a class="nav-link" href="{% url 'sitter' %}"><i class="fa-solid fa-list fa-lg"></i> Sitters</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'at_school' %}"><i class="fa-solid fa-list fa-lg"></i> Daily Baby Records</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'in_school' %}"><i class="fa-solid fa-list fa-lg"></i> Daily Sitter Records</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fa-solid fa-list fa-lg"></i> Procurement</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-list fa-lg"></i> Dolls</a>
+                <a class="nav-link" href="{% url 'doll' %}"><i class="fa-solid fa-list fa-lg"></i> Dolls</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-list fa-lg"></i> Payments</a>
+                <a class="nav-link" href="{% url 'dollsale' %}"><i class="fa-solid fa-list fa-lg"></i> Dollsales</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'supply' %}"><i class="fa-solid fa-list fa-lg"></i> Daycare Supplies</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fa-solid fa-plus fa-lg"></i> Payments</a>
@@ -48,7 +57,23 @@
                 <a class="nav-link" href="{% url 'adds' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Sitters</a>
               </li>
 
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'addd' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Baby's Day</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'adddd' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Sitter's Day</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'addds' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Supplies</a>
+              </li>
 
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adddds' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Doll</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'addddd' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Doll Sale</a>
+            </li>
              </ul>
           </div>
         </div>

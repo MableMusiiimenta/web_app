@@ -86,8 +86,11 @@ class At_school(models.Model):
 class In_school(models.Model):
     l_name = models.ForeignKey(Sitter,max_length=50, on_delete=models.CASCADE, blank=True, verbose_name="Name of Sitter")
     avail_status = models.CharField(max_length=50, choices=AVAILABILITY_STATUS, null=True, blank=True, verbose_name="Availability Status")
-    babies_attd = models.CharField(max_length=100, verbose_name="Babies attended to")
+    babies_attd = models.CharField(max_length=100, verbose_name="Babies Assigned")
     payment = models.FloatField(verbose_name="Amount Paid to Sitter")
+
+    def __str__(self):
+        return f"{self.l_name} - {self.avail_status} - {self.babies_attd} - {self.payment}"
 
 
 PAY_FOR = (
@@ -96,7 +99,7 @@ PAY_FOR = (
 )
 
 class Babyfee(models.Model):
-    l_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, blank=True, verbose_name="Paid For")
+    l_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, blank=True, verbose_name="For Baby")
     arrival_time = models.DateTimeField(verbose_name="Time of Arrival")
     departure_time = models.DateTimeField(verbose_name="Time of Departure")
     pay_for = models.CharField(max_length=20, null=True, choices=PAY_FOR, blank=True, verbose_name="Pay For")
@@ -130,7 +133,7 @@ class SitterPayment(models.Model):
     def __str__(self):
         return f"{self.l_name} - {self.attendance_date}"
 
-class Supplies(models.Model):
+class Supply(models.Model):
     item = models.CharField(max_length=100, verbose_name="Item")
     qty_stocked = models.IntegerField(null=True, blank=True, verbose_name="Quantity Stocked")
     date_stocked = models.DateField(null=True, blank=True, verbose_name="Date Stocked")

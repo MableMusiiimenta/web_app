@@ -3,7 +3,7 @@ from .models import Baby
 from .models import Sitter
 from .models import Babyfee
 from .models import SitterPayment
-from .models import Supplies
+from .models import Supply
 from .models import Doll
 from .models import DollSale
 from .models import At_school
@@ -126,9 +126,9 @@ class SitterPaymentForm(forms.ModelForm):
             "number_of_babies": forms.NumberInput(attrs={"class": "form-control"}),
             "payment_amount": forms.NumberInput(attrs={"class": "form-control"}),
         }
-class SuppliesForm(forms.ModelForm):
+class SupplyForm(forms.ModelForm):
     class Meta:
-        model = Supplies
+        model = Supply
         fields = ["item", "qty_stocked", "date_stocked", "qty_on_hand", "consumed_today", "qty_left", "expiry_date"]
         labels = {
             "item": "Item",
@@ -171,11 +171,12 @@ class DollForm(forms.ModelForm):
 class DollSaleForm(forms.ModelForm):
     class Meta:
         model = DollSale
-        fields = ["doll", "sale_date", "l_name", "quantity_sold", "total_amount"]
+        fields = ["doll", "sale_date", "l_name", "price", "quantity_sold", "total_amount"]
         labels = {
             "doll": "Doll",
             "sale_date": "Sale Date",
             "l_name": "Sold To",
+            "price": "Price",
             "quantity_sold": "Quantity Sold",
             "total_amount": "Total Amount",
         }
@@ -183,6 +184,7 @@ class DollSaleForm(forms.ModelForm):
             "doll": forms.TextInput(attrs={"class": "form-control"}),
             "sale_date": forms.DateInput(attrs={"class": "form-control"}),
             "sold_to": forms.TextInput(attrs={"class": "form-control"}),
+            "price": forms.NumberInput(attrs={"class": "form-control"}),
             "quantity_sold": forms.NumberInput(attrs={"class": "form-control"}),
             "total_amount": forms.NumberInput(attrs={"class" : "form-control"}),
         }
@@ -190,12 +192,16 @@ class DollSaleForm(forms.ModelForm):
 class In_schoolForm(forms.ModelForm):
     class Meta:
         model = In_school
-        fields = ["avail_status", "babies_attd", "payment"]
+        fields = ["l_name", "avail_status", "babies_attd", "payment"]
         labels = {
+            "l_name": "Name of Sitter",
             "avail_status": "Availability Status",
-            "babies_attd": "Babies attended to",
+            "babies_attd": "Babies Assigned",
+            "payment": "Amount Paid to Sitter",
         }
         widgets = {
+            "l_name": forms.TextInput(attrs={"class": "form-control"}),
             "avail_status": forms.TextInput(attrs={"class": "form-control"}),
             "babies_attd": forms.TextInput(attrs={"class": "form-control"}),
+            "payment": forms.TextInput(attrs={"class": "form-control"}),
         }
