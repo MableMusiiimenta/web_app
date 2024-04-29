@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -426,6 +427,51 @@ def deleteeee(request, id):
         doll = DollSale.objects.get(pk=id)
         doll.deleteeee()
     return HttpResponseRedirect(reverse("dollsale"))
+
+
+def save_doll_sale(request):
+    if request.method == 'POST':
+        # Assuming the form is submitted via POST request
+        doll_id = request.POST.get('doll_id')
+        sale_date = request.POST.get('sale_date')
+        l_name_id = request.POST.get('l_name_id')
+        price = request.POST.get('price')
+        quantity_sold = request.POST.get('quantity_sold')
+
+        # Perform necessary validations
+
+        # Check if any required fields are missing
+        if not all([doll_id, sale_date, l_name_id, price, quantity_sold]):
+            return HttpResponseBadRequest("All fields are required.")
+
+        # Validate price and quantity_sold are numeric
+        try:
+            price = float(price)
+            quantity_sold = int(quantity_sold)
+        except ValueError:
+            return HttpResponseBadRequest("Price and quantity sold must be numeric.")
+
+        # Validate price and quantity_sold are positive numbers
+        if price <= 0 or quantity_sold <= 0:
+            return HttpResponseBadRequest("Price and quantity sold must be positive.")
+
+        # Create a DollSale object
+        doll_sale = DollSale(
+            doll_id=doll_id,
+            sale_date=sale_date,
+            l_name_id=l_name_id,
+            price=price,
+            quantity_sold=quantity_sold
+        )
+
+        # Calculate total_amount
+        total_amount = price * quantity_sold
+        doll_sale.total_amount = total_amount
+
+        # Save the DollSale object
+        doll_sale.save()
+
+
 
 # Sitter view
 

@@ -86,7 +86,7 @@ class At_school(models.Model):
 class In_school(models.Model):
     l_name = models.ForeignKey(Sitter,max_length=50, on_delete=models.CASCADE, blank=True, verbose_name="Name of Sitter")
     avail_status = models.CharField(max_length=50, choices=AVAILABILITY_STATUS, null=True, blank=True, verbose_name="Availability Status")
-    babies_attd = models.CharField(max_length=100, verbose_name="Babies Assigned")
+    babies_attd = models.ForeignKey(Baby, max_length=100, on_delete=models.CASCADE, verbose_name="Babies Assigned")
     payment = models.FloatField(verbose_name="Amount Paid to Sitter")
 
     def __str__(self):
@@ -136,6 +136,8 @@ class SitterPayment(models.Model):
 class Supply(models.Model):
     item = models.CharField(max_length=100, verbose_name="Item")
     qty_stocked = models.IntegerField(null=True, blank=True, verbose_name="Quantity Stocked")
+    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cost Per Item")
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Cost")
     date_stocked = models.DateField(null=True, blank=True, verbose_name="Date Stocked")
     qty_on_hand = models.IntegerField(verbose_name="Quantity In Stock")
     consumed_today = models.IntegerField(null=True, blank=True, verbose_name="Daily Comsumption")
@@ -149,7 +151,7 @@ class Doll(models.Model):
     name = models.CharField(max_length=100, verbose_name="Doll Name")
     brand = models.CharField(max_length=100, blank=True, null=True, verbose_name="Brand")
     color = models.CharField(max_length=50, blank=True, null=True, verbose_name="Color")
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Price")
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Cost")
     qty_in_stock = models.IntegerField(verbose_name="Quantity in Stock")
     
     def __str__(self):
@@ -158,16 +160,13 @@ class Doll(models.Model):
 class DollSale(models.Model):
     doll = models.ForeignKey(Doll, on_delete=models.CASCADE, verbose_name="Doll")
     sale_date = models.DateField(null=True, blank=True, verbose_name="Sale Date")
-    l_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, blank=True, verbose_name="Sold To")
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Price")
+    l_name = models.ForeignKey(Baby, on_delete=models.CASCADE, blank=True, verbose_name="Sold To")
+    price = models.FloatField(verbose_name="Price")
     quantity_sold = models.PositiveIntegerField(null=True, blank=True, verbose_name="Quantity Sold")
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Amount")
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Total Amount")
 
-    def calculate_total_amount(self):
-        total_amount = self.price * self.quantity_sold
-        return total_amount
-    
-    def save(self, *args, **kwargs):
-        self.total_amount = self.calculate_total_amount()
-        super().save(*args, **kwargs)
+
+
+
+
 
