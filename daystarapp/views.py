@@ -247,7 +247,7 @@ def supply(request):
     return render(request, "supplies/supply.html", {"supplies": Supply.objects.all()} )
 
 def view_supply(request, id):
-    baby = Supply.objects.get(pk=id)
+    supply = Supply.objects.get(pk=id)
     return HttpResponseRedirect(reverse("supply"))
 
 
@@ -257,6 +257,8 @@ def addds(request):
         if form.is_valid():
             new_item = form.cleaned_data["item"]
             new_qty_stocked = form.cleaned_data["qty_stocked"]
+            new_cost_per_item = form.cleaned_data["cost_per_item"]
+            new_total_cost = form.cleaned_data["total_cost"]
             new_date_stocked = form.cleaned_data["date_stocked"]
             new_qty_on_hand = form.cleaned_data["qty_on_hand"]
             new_consumed_today = form.cleaned_data["consumed_today"]
@@ -267,6 +269,8 @@ def addds(request):
             new_supply = Supply(
                 item=new_item,
                 qty_stocked=new_qty_stocked,
+                cost_per_item=new_cost_per_item,
+                total_cost=new_total_cost,
                 date_stocked=new_date_stocked,
                 qty_on_hand=new_qty_on_hand,
                 consumed_today=new_consumed_today,
@@ -385,6 +389,7 @@ def addddd(request):
             new_l_name = form.cleaned_data["l_name"]
             new_price = form.cleaned_data["price"]
             new_quantity_sold = form.cleaned_data["quantity_sold"]
+            new_total_amount = form.cleaned_data["total_amount"]
           
             new_dollsale = DollSale(
                 doll=new_doll,
@@ -392,6 +397,7 @@ def addddd(request):
                 l_name=new_l_name,
                 price=new_price,
                 quantity_sold=new_quantity_sold,
+                total_amount=new_total_amount,
             )
             new_dollsale.save()
             return render(request, "dollsales/addddd.html", {
@@ -429,47 +435,6 @@ def deleteeee(request, id):
     return HttpResponseRedirect(reverse("dollsale"))
 
 
-def save_doll_sale(request):
-    if request.method == 'POST':
-        # Assuming the form is submitted via POST request
-        doll_id = request.POST.get('doll_id')
-        sale_date = request.POST.get('sale_date')
-        l_name_id = request.POST.get('l_name_id')
-        price = request.POST.get('price')
-        quantity_sold = request.POST.get('quantity_sold')
-
-        # Perform necessary validations
-
-        # Check if any required fields are missing
-        if not all([doll_id, sale_date, l_name_id, price, quantity_sold]):
-            return HttpResponseBadRequest("All fields are required.")
-
-        # Validate price and quantity_sold are numeric
-        try:
-            price = float(price)
-            quantity_sold = int(quantity_sold)
-        except ValueError:
-            return HttpResponseBadRequest("Price and quantity sold must be numeric.")
-
-        # Validate price and quantity_sold are positive numbers
-        if price <= 0 or quantity_sold <= 0:
-            return HttpResponseBadRequest("Price and quantity sold must be positive.")
-
-        # Create a DollSale object
-        doll_sale = DollSale(
-            doll_id=doll_id,
-            sale_date=sale_date,
-            l_name_id=l_name_id,
-            price=price,
-            quantity_sold=quantity_sold
-        )
-
-        # Calculate total_amount
-        total_amount = price * quantity_sold
-        doll_sale.total_amount = total_amount
-
-        # Save the DollSale object
-        doll_sale.save()
 
 
 
@@ -542,7 +507,6 @@ def deletes(request, id):
         sitter.delete()
     return HttpResponseRedirect(reverse("sitter"))
 
-#babyfee
 def babyfee(request):
     return render(request, "babyfees/babyfee.html", {"babyfees": Babyfee.objects.all()} )
 
@@ -550,34 +514,120 @@ def view_babyfee(request, id):
     babyfee = Babyfee.objects.get(pk=id)
     return HttpResponseRedirect(reverse("babyfee"))
 
-def calculate_payment(request, babyfee_id):
-    babyfee = Babyfee.objects.get(id=babyfee_id)
-    payment_amount = babyfee.calculate_payment_amount()
-    return render(request, 'payment_amount.html', {'babyfee': babyfee, 'payment_amount': payment_amount})
+def adi(request):
+    if request.method == "POST":
+        form = BabyfeeForm(request.POST)
+        if form.is_valid():
+            new_l_name = form.cleaned_data["l_name"]
+            new_arrival_time = form.cleaned_data["arrival_time"]
+            new_departure_time = form.cleaned_data["departure_time"]
+            new_pay_for = form.cleaned_data["pay_for"]
+            new_amount_due = form.cleaned_data["amount_due"]
+            new_amount_paid = form.cleaned_data["amount_paid"]
+            new_payment_date = form.cleaned_data["payment_date"]
+            new_payment_method = form.cleaned_data["payment_method"]
 
-def view_payment_history(request):
-    payments = Baby.objects.filter(payment_date__isnull=False)
-    return render(request, 'payment_history.html', {'payments': payments})
-
-def handle_monthly_payments(request):
-    return render(request, 'monthly_payments.html')
-
-def handle_sitter_payment(request, sitter_id):
-    if request.method == 'POST':
-        attendance_date = request.POST.get('attendance_date')
-        number_of_babies = int(request.POST.get('number_of_babies'))
-        sitter = Sitter.objects.get(id=sitter_id)
-        
-        # Calculate payment amount
-        payment_amount = number_of_babies * 3000
-        
-        # Create a new SitterPayment instance and save it
-        sitter_payment = SitterPayment(sitter=sitter, attendance_date=attendance_date, number_of_babies=number_of_babies, payment_amount=payment_amount)
-        sitter_payment.save()
-        
-        # Redirect to a confirmation page
-        return redirect('payment_confirmation', payment_id=sitter_payment.id)
+            new_babyfee = Babyfee(
+                l_name=new_l_name,
+                arrival_time=new_arrival_time,
+                departure_time=new_departure_time,
+                pay_for=new_pay_for,
+                amount_due=new_amount_due,
+                amount_paid=new_amount_paid,
+                payment_date=new_payment_date,
+                payment_method=new_payment_method
+                
+            )
+            new_babyfee.save()
+            return render(request, "babyfees/adi.html", {
+                "form": BabyfeeForm(),
+                "success": True
+            })
     else:
-        # Handle GET request (display the form)
-        sitter = Sitter.objects.get(id=sitter_id)
-        return render(request, 'sitter_payment_form.html', {'sitter': sitter})
+        form = BabyfeeForm()
+
+    return render(request, "babyfees/adi.html", {
+        "form": form
+    })
+
+def edi(request, id):
+    if request.method == "POST":
+        babyfee = Babyfee.objects.get(pk=id)
+        form = BabyfeeForm(request.POST, instance=babyfee)
+        if form.is_valid():
+            form.save()
+            return render(request, "babyfees/edi.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        babyfee = Babyfee.objects.get(pk=id)
+        form = BabyfeeForm(instance=babyfee)
+    return render(request, "babyfees/edi.html", {
+            "form": form
+        })
+
+def dele(request, id):
+    if request.method == "POST":
+        babyfee = Babyfee.objects.get(pk=id)
+        babyfee.delete()
+    return HttpResponseRedirect(reverse("babyfee"))
+
+def sitterpayment(request):
+    return render(request, "sitterpayments/sitterpayment.html", {"sitterpayments": SitterPayment.objects.all()} )
+
+def view_sitterpayment(request, id):
+    sitterpayment = SitterPayment.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("sitterpayment"))
+
+def addi(request):
+    if request.method == "POST":
+        form = SitterPaymentForm(request.POST)
+        if form.is_valid():
+            new_l_name = form.cleaned_data["l_name"]
+            new_attendance_date = form.cleaned_data["attendance_date"]
+            new_number_of_babies = form.cleaned_data["number_of_babies"]
+            new_payment_amount = form.cleaned_data["payment_amount"]
+            
+
+            new_sitterpayment = SitterPayment(
+                l_name=new_l_name,
+                attendance_date=new_attendance_date,
+                number_of_babies=new_number_of_babies,
+                payment_amount=new_payment_amount
+                
+            )
+            new_sitterpayment.save()
+            return render(request, "sitterpayments/addi.html", {
+                "form": SitterPaymentForm(),
+                "success": True
+            })
+    else:
+        form = SitterPaymentForm()
+
+    return render(request, "sitterpayments/addi.html", {
+        "form": form
+    })
+
+def edita(request, id):
+    if request.method == "POST":
+        sitterpayment = SitterPayment.objects.get(pk=id)
+        form = SitterPaymentForm(request.POST, instance=sitterpayment)
+        if form.is_valid():
+            form.save()
+            return render(request, "sitterpayments/edita.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        sitterpayment = SitterPayment.objects.get(pk=id)
+        form = SitterPaymentForm(instance=sitterpayment)
+    return render(request, "sitterpayments/edita.html", {
+            "form": form
+        })
+
+def delee(request, id):
+    if request.method == "POST":
+        sitterpayment = SitterPayment.objects.get(pk=id)
+        sitterpayment.delete()
+    return HttpResponseRedirect(reverse("sitterpayment"))

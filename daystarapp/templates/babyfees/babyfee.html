@@ -1,59 +1,63 @@
 {% extends "babies/base.html" %}
 
 {% block body %}
-        <h3 class="m-4">Daycare Supplies</h3>
+        <h3 class="m-4">Daycare Fees</h3>
         <div class="row">
             <div class="col-12">
-                {% if supplies %}
+                {% if babyfees %}
                 <div class="card bg-light ms-4 me-4 mb-4">
-                    <div class="card-header"><i class="fa-solid fa-list fa-lg"></i> Supply Records </div>
+                    <div class="card-header"><i class="fa-solid fa-list fa-lg"></i> Fees Payments </div>
                     <div class="card-body">
                       <p class="card-text">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                   <tr>
-                                    <th scope="col">Item</th>
-                                    <th scope="col">Quantity Stocked</th>
-                                    <th scope="col">Date Stocked</th>
-                                    <th scope="col">Quantity In Stock</th>
-                                    <th scope="col">Daily Consumption</th>
-                                    <th scope="col">Quantity Left</th>
-                                    <th scope="col">Expiry Date</th>
+                                    <th scope="col">For Baby</th>
+                                    <th scope="col">Time of Arrival</th>
+                                    <th scope="col">Time of Departure</th>
+                                    <th scope="col">Pay For</th>
+                                    <th scope="col">Amount Due</th>
+                                    <th scope="col">Amount Paid</th>
+                                    <th scope="col">Mode of Payment</th>
+                                    <th scope="col">Payment Date</th>
                                     <th scope="col">ACTIONS</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                 {% for supply in supplies %}
+                                 {% for babyfee in babyfees %}
                                  <tr>
-                                    <td>{{ supply.item }}</td>
-                                    <td>{{ supply.qty_stocked }}</td>
-                                    <td>{{ supply.date_stocked }}</td>
-                                    <td>{{ supply.qty_on_hand }}</td>
-                                    <td>{{ supply.consumed_today }}</td>
-                                    <td>{{ supply.qty_left }}</td>
-                                    <td>{{ supply.expiry_date }}</td>
+                                    <td>{{ babyfee.l_name }}</td>
+                                    <td>{{ babyfee.arrival_time }}</td>
+                                    <td>{{ babyfee.departure_time }}</td>
+                                    <td>{{ babyfee.pay_for }}</td>
+                                    <td>UGX.{{ babyfee.amount_due }}</td>
+                                    <td>UGX.{{ babyfee.amount_paid }}</td>
+                                    <td>{{ babyfee.mode_of_payment }}</td>
+                                    <td>{{ babyfee.payment_date }}</td>
+                                    
+                                   
                                     <td>
-                                      <button type="button" class="btn btn-success me-1" href="{% url 'view_supply' supply.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{supply.id}}"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
+                                      <button type="button" class="btn btn-success me-1" href="{% url 'view_babyfee' babyfee.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{babyfee.id}}"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
 
-                                      <a class="btn btn-warning me-1" href="{% url 'editts' supply.id %}">
+                                      <a class="btn btn-warning me-1" href="{% url 'edi' babyfee.id %}">
                                         <i class="fa-solid fa-pen-to-square fa-lg"></i>
                                       </a>
 
-                                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletees{{supply.id}}">
+                                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dele{{babyfee.id}}">
                                         <i class="fa-solid fa-trash fa-lg"></i>
                                       </button>
                                     </td>
 
                                   </tr>
                                  
-                                  <!--Modal - View Supply-->
-                                        <div class="modal" id="myModal{{supply.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                  <!--Modal - View Baby-->
+                                        <div class="modal" id="myModal{{babyfee.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header">
                                                   <h5 class="modal-title">
-                                                    Supply: {{ supply.item }} {{ supply.qty_stocked }}
+                                                    Babyfee: {{ babyfee.pay_for }} {{ babyfee.amount_due }}
                                                   </h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
@@ -61,13 +65,18 @@
                                                 </div>
                                                 <div class="modal-body">
                                                   <ul class="list-unstyled">
-                                                    <li>Item: <strong>{{ supply.item }}</strong></li>
-                                                    <li>Quantity Stocked: <strong>{{ supply.qty_stocked }}</strong></li>
-                                                    <li>Date Stocked: <strong>{{ supply.date_stocked }}</strong></li>
-                                                    <li>Quantity In Stock: <strong>{{ supply.qty_on_hand }}</strong></li>
-                                                    <li>Daily Consumption: <strong>{{ supply.consumed_today }}</strong></li>
-                                                    <li>Quantity Left: <strong>{{ supply.qty_left }}</strong></li>
-                                                    <li>Expiry Date: <strong>{{ sitter.expiry_date }}</strong></li>
+                                                    
+                                                    <li>For Baby: <strong>{{ babyfee.l_name }}</strong></li>
+                                                    <li>Time of Arrival: <strong>{{ babyfee.arrival_time }}</strong></li>
+                                                    <li>Time of Departure: <strong>{{ babyfee.departure_time }}</strong></li>
+                                                    <li>Pay For: <strong>{{ babyfee.pay_for }}</strong></li>
+                                                    <li>Amount Due: <strong>{{ babyfee.amount_due }}</strong></li>
+                                                    <li>Amount Paid: <strong>{{ babyfee.amount_paid }}</strong></li>
+                                                    <li>Mode of Payment: <strong>{{ babyfee.mode_of_payment }}</strong></li>
+                                                    <li>Payment Date: <strong>{{ babyfee.payment_date }}</strong></li>
+                                                  
+                                                  </ul>
+                                           
                                                   </ul>
                                                 </div>
                                                 <div class="modal-footer">
@@ -78,13 +87,13 @@
                                           </div>
                                        
 
-                                          <!--Modal - Delete Record-->
-                                          <div class="modal" id="deletees{{supply.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                          <!--Modal - Delete Baby-->
+                                          <div class="modal" id="dele{{babyfee.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header">
                                                   <h5 class="modal-title">
-                                                    Supply: {{ supply.item }} {{ supply.qty_stocked }}
+                                                    Babyfee: {{ babyfee.pay_for }} {{ babyfee.amount_due }}
                                                   </h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
@@ -94,7 +103,7 @@
                                                   <p>Are you sure you want to delete this record?</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                  <form action="{% url 'deletees' supply.id %}" method="POST">
+                                                  <form action="{% url 'dele' babyfee.id %}" method="POST">
                                                     {% csrf_token %}
                                                     <input type="submit" class="btn btn-danger" value="delete">
                                                   </form>
@@ -113,7 +122,7 @@
                       </p>
                     </div>
                 {% else %}
-                <h5 class="alert alert-primary ms-4 me-4">No Supply Records</h5>
+                <h5 class="alert alert-primary ms-4 me-4">No Fees Payment Records</h5>
                 {% endif %}
             </div>
         </div>

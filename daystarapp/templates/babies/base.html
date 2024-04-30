@@ -47,8 +47,12 @@
                 <a class="nav-link" href="{% url 'supply' %}"><i class="fa-solid fa-list fa-lg"></i> Daycare Supplies</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-plus fa-lg"></i> Payments</a>
+                <a class="nav-link" href="{% url 'babyfee' %}"><i class="fa-solid fa-plus fa-lg"></i> Fees Payments</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'sitterpayment' %}"><i class="fa-solid fa-plus fa-lg"></i> Sitter Payments</a>
+              </li>
+
 
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'add' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Babies</a>
@@ -75,6 +79,13 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'addddd' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Doll Sale</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adi' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Fees Payment</a>
+            </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'addi' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Sitter Payment</a>
+          </li>
              </ul>
           </div>
         </div>

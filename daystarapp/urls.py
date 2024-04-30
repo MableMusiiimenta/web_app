@@ -31,9 +31,11 @@ urlpatterns = [
 
     path("babyfee/", views.babyfee, name="babyfee"),
     path("view_babyfee/<int:id>/", views.view_babyfee, name="view_babyfee"),
-    path("view_payment_history/", views.view_payment_history, name="view_payment_history"),
-    path("handle_monthly_payments/", views.handle_monthly_payments, name="handle_monthly_payments"),
-    path('calculate_payment/<int:babyfee_id>/', views.calculate_payment, name='calculate_payment'),
+    path("adi/", views.adi, name="adi"),
+    path("edi/<int:id>/", views.edi, name="edi"),
+    path("dele/<int:id>/", views.dele, name="dele"),
+
+
     path("sitter/", views.sitter, name="sitter"),
     path("adds/", views.adds, name="adds"),
     path("edits/<int:id>/", views.edits, name="edits"),
@@ -47,7 +49,13 @@ urlpatterns = [
     path("edittt/<int:id>/", views.edittt, name="edittt"),
     path("deleteee/<int:id>/", views.deleteee, name="deleteee"),
 
-    
+    path("sitterpayment/", views.sitterpayment, name="sitterpayment"),
+    path("view_sitterpayment/<int:id>/", views.view_sitterpayment, name="view_sitterpayment"),
+    path("addi/", views.addi, name="addi"),
+    path("edita/<int:id>/", views.edita, name="edita"),
+    path("delee/<int:id>/", views.delee, name="delee"),
+
+
     path("supply/", views.supply, name="supply"),
     path("view_supply/<int:id>/", views.view_supply, name="view_supply"),
     path("addds/", views.addds, name="addds"),

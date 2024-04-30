@@ -84,11 +84,11 @@ class At_schoolForm(forms.ModelForm):
             "comment": "Comment",
         }
         widgets = {
-            "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "time"}),
+            "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
             "bringer_name": forms.TextInput(attrs={"class": "form-control"}),
             "stay": forms.TextInput(attrs={"class": "form-control"}),
             "assigned": forms.TextInput(attrs={"class": "form-control"}),
-            "departure_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "time"}),
+            "departure_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
             "taker_name": forms.TextInput(attrs={"class": "form-control"}),
             "comment": forms.TextInput(attrs={"class": "form-control"}),
         }
@@ -96,33 +96,43 @@ class At_schoolForm(forms.ModelForm):
 class BabyfeeForm(forms.ModelForm):
     class Meta:
         model = Babyfee
-        fields = ["arrival_time", "departure_time", "payment_amount", "payment_date", "payment_method"]
+        fields = ["l_name", "arrival_time", "departure_time", "pay_for", "amount_due", "amount_paid", "payment_date", "payment_method"]
         labels = {
+            "l_name": "For",
             "arrival_time": "Time In",
             "departure_time": "Time Out",
-            "payment_amount": "Amount to Pay",
-            "payment_date": "Payment Date",
-            "payment_method": "Payment Method",
+            "pay_for": "Pay For",
+            "amount_due": "Amount Due",
+            "amount_paid": "Amount Paid",
+            "payment_date": "Date of Payment",
+            "payment_method": "Mode of Payment",
+        
         }
         widgets = {
-            "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "time"}),
-            "departure_time": forms.DateTimeInput(attrs={"class": "form-control"}),
-            "payment_amount": forms.NumberInput(attrs={"class": "form-control"}),
-            "payment_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
-            "payment_method": forms.TextInput(attrs={"class": "form-control"}),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
+            "departure_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
+            "for": forms.TextInput(attrs={"class": "form-control"}),
+            "due": forms.NumberInput(attrs={"class": "form-control"}),
+            "paid": forms.NumberInput(attrs={"class": "form-control"}),
+            "payment_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
+            "method": forms.TextInput(attrs={"class": "form-control"}),
+            
         }
 
 class SitterPaymentForm(forms.ModelForm):
     class Meta:
         model = SitterPayment
-        fields = ["attendance_date", "number_of_babies", "payment_amount"]
+        fields = ["l_name", "attendance_date", "number_of_babies", "payment_amount"]
         labels = {
+            "l_name": "Name of Sitter",
             "attendance_date": "Attendance Date",
             "number_of_babies": "Number of Babies Attended To",
             "payment_amount": "Amount Paid to Sitter",
         } 
         widgets = {
-            "attendance_date": forms.DateInput(attrs={"class": "form-control"}),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "attendance_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
             "number_of_babies": forms.NumberInput(attrs={"class": "form-control"}),
             "payment_amount": forms.NumberInput(attrs={"class": "form-control"}),
         }
@@ -143,14 +153,14 @@ class SupplyForm(forms.ModelForm):
         }
         widgets = {
             "item": forms.TextInput(attrs={"class": "form-control"}),
-            "qty_stocked": forms.NumberInput(attrs={"class": "form-control"}),
+            "stocked": forms.NumberInput(attrs={"class": "form-control"}),
             "cost_per_item": forms.NumberInput(attrs={"class": "form-control"}),
             "total_cost": forms.NumberInput(attrs={"class": "form-control"}),
             "date_stocked": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "qty_on_hand": forms.NumberInput(attrs={"class": "form-control"}),
             "consumed_today": forms.NumberInput(attrs={"class": "form-control"}),
             "qty_left": forms.NumberInput(attrs={"class": "form-control"}),
-            "expiry_date": forms.DateInput(attrs={"class": "form-control"}),
+            "expiry_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
         }
 
 class DollForm(forms.ModelForm):
@@ -188,9 +198,9 @@ class DollSaleForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "sale_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "sold_to": forms.TextInput(attrs={"class": "form-control"}),
-            "price": forms.NumberInput(attrs={"class": "form-control"}),
+            "cost": forms.TextInput(attrs={"class": "form-control", "type": "number"}),
             "quantity_sold": forms.NumberInput(attrs={"class": "form-control"}),
-            "total_amount": forms.NumberInput(attrs={"class" : "form-control"}),
+            "total_amount": forms.TextInput(attrs={"class": "form-control", "type": "number"}),
         }
 
 class In_schoolForm(forms.ModelForm):

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.core.validators import RegexValidator
 
 # Create your models here.
 STAY = (
@@ -103,17 +103,19 @@ class Babyfee(models.Model):
     arrival_time = models.DateTimeField(verbose_name="Time of Arrival")
     departure_time = models.DateTimeField(verbose_name="Time of Departure")
     pay_for = models.CharField(max_length=20, null=True, choices=PAY_FOR, blank=True, verbose_name="Pay For")
-    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Fees Paid")
+    amount_due = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Amount Due")
+    amount_paid = models.CharField(verbose_name="Price", max_length=7, blank=True, validators=[RegexValidator(r'^[0-9]+$')])
     payment_date = models.DateField(null=True, blank=True, verbose_name="Payment Date")
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD, null=True, blank=True, verbose_name="Mode of Payment")
 
-    def calculate_payment_amount(self):
+    def save(self, *args, **kwargs):
         if self.pay_for == "Half-day":
-            return 10000
-        elif self.pay_for == "Full-day":
-            return 15000
+            self.amount_due = 10000
         else:
-            return 0
+            self.amount_due = 15000
+        super(Babyfee, self).save(*args, **kwargs)
+  
+
 
 class SitterPayment(models.Model):
     l_name = models.ForeignKey(Sitter, on_delete=models.CASCADE, verbose_name="Name of Sitter", blank=True, max_length=50)
@@ -135,13 +137,13 @@ class SitterPayment(models.Model):
 
 class Supply(models.Model):
     item = models.CharField(max_length=100, verbose_name="Item")
-    qty_stocked = models.IntegerField(null=True, blank=True, verbose_name="Quantity Stocked")
-    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cost Per Item")
+    qty_stocked = models.CharField(max_length=20, null=True, blank=True, verbose_name="Quantity Stocked")
+    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Cost Per Item")
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Cost")
     date_stocked = models.DateField(null=True, blank=True, verbose_name="Date Stocked")
-    qty_on_hand = models.IntegerField(verbose_name="Quantity In Stock")
-    consumed_today = models.IntegerField(null=True, blank=True, verbose_name="Daily Comsumption")
-    qty_left = models.IntegerField(verbose_name="Quantity Left")
+    qty_on_hand = models.CharField(max_length=20, verbose_name="Quantity In Stock")
+    consumed_today = models.CharField(max_length=20, null=True, blank=True, verbose_name="Daily Comsumption")
+    qty_left = models.CharField(max_length=20, verbose_name="Quantity Left")
     expiry_date = models.DateField(null=True, blank=True, verbose_name="Expiry Date")
 
     def __str__(self):
@@ -157,13 +159,22 @@ class Doll(models.Model):
     def __str__(self):
         return self.name
     
+from django.db import models
+
 class DollSale(models.Model):
     doll = models.ForeignKey(Doll, on_delete=models.CASCADE, verbose_name="Doll")
     sale_date = models.DateField(null=True, blank=True, verbose_name="Sale Date")
     l_name = models.ForeignKey(Baby, on_delete=models.CASCADE, blank=True, verbose_name="Sold To")
-    price = models.FloatField(verbose_name="Price")
+    price = models.CharField(verbose_name="Price", max_length=7, blank=True, validators=[RegexValidator(r'^[0-9]+$')])
     quantity_sold = models.PositiveIntegerField(null=True, blank=True, verbose_name="Quantity Sold")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Total Amount")
+
+    def save(self, *args, **kwargs):
+        # Calculate total_amount before saving
+        if self.price and self.quantity_sold:
+            self.total_amount = float(self.price) * self.quantity_sold
+        super().save(*args, **kwargs)
+
 
 
 
