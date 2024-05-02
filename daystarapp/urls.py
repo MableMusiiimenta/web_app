@@ -1,5 +1,7 @@
 from django.urls import path
+
 from . import views
+from .views import index
 from .views import serve_js
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
@@ -8,9 +10,9 @@ from django.contrib import admin
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("board.html", views.board, name="board"),
-    
-    path("dashb.html", views.dashb, name="dashb"),
+
+
+    path("dashb/", views.dashb, name="dashb"),
 
     path("script.js", serve_js, name="serve_js"),
 
@@ -74,8 +76,6 @@ urlpatterns = [
     path("addddd/", views.addddd, name="addddd"),
     path("editttt/<int:id>/", views.editttt, name="editttt"),
     path("deleteeee/<int:id>/", views.deleteeee, name="deleteeee"),
-
-    path("login/", auth_views.LoginView.as_view(template_name="board.html"), name="login"),
 
 ]
 

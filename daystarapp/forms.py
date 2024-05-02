@@ -8,6 +8,20 @@ from .models import Doll
 from .models import DollSale
 from .models import At_school
 from .models import In_school
+from .models import Index
+from django.core.exceptions import ValidationError
+
+
+class IndexForm(forms.ModelForm):
+    class Meta:
+        model = Index
+        fields = ['username', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+
+    
+
 
 class BabyForm(forms.ModelForm):
     class Meta:
@@ -49,11 +63,11 @@ class SitterForm(forms.ModelForm):
             "nok": "Next of Kin",
             "nin": "National ID Number",
             "rec_name": "Recommender's Name",
-            "rec_contact": "Recommender's Contact",
+            "rec_contact": "Recommender's Phone Number",
             "religion": "Religion",
             "educ_level": "Level of Education",
             "s_number": "Sitter Number",
-            "s_contact": "Sitter's Contact",
+            "s_contact": "Sitter's Phone Number",
         } 
         widgets = {
             "f_name": forms.TextInput(attrs={"class": "form-control"}),
@@ -61,13 +75,13 @@ class SitterForm(forms.ModelForm):
             "l_location": forms.TextInput(attrs={"class": "form-control"}),
             "dob": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "nok": forms.TextInput(attrs={"class": "form-control"}),
-            "nin": forms.NumberInput(attrs={"class": "form-control"}),
+            "nin": forms.TextInput(attrs={"class": "form-control"}),
             "rec_name": forms.TextInput(attrs={"class": "form-control"}),
-            "rec_contact": forms.TextInput(attrs={"class": "form-control"}),
-            "religion": forms.TextInput(attrs={"class": "form-control"}),
-            "educ_level": forms.TextInput(attrs={"class": "form-control"}),
-            "s_number": forms.NumberInput(attrs={"class": "form-control"}),
-            "s_contact": forms.NumberInput(attrs={"class": "form-control"}),
+            "contact": forms.TextInput(attrs={"class": "form-control", "type":"number"}),
+            "reli": forms.TextInput(attrs={"class": "form-control"}),
+            "educ": forms.TextInput(attrs={"class": "form-control"}),
+            "number": forms.NumberInput(attrs={"class": "form-control"}),
+            "contact": forms.TextInput(attrs={"class": "form-control", "type":"number"}),
         }
 
 class At_schoolForm(forms.ModelForm):
@@ -147,15 +161,15 @@ class SupplyForm(forms.ModelForm):
             "total_cost": "Total Cost",
             "date_stocked": "Date Stocked",
             "qty_on_hand": "Quantity In Stock",
-            "consumed_today": "Daily Consumption",
+            "consumed_today": "Consumed Today",
             "qty_left": "Quantity Left",
             "expiry_date": "Expiry Date",
         }
         widgets = {
             "item": forms.TextInput(attrs={"class": "form-control"}),
             "stocked": forms.NumberInput(attrs={"class": "form-control"}),
-            "cost_per_item": forms.NumberInput(attrs={"class": "form-control"}),
-            "total_cost": forms.NumberInput(attrs={"class": "form-control"}),
+            "cost_per_item": forms.TextInput(attrs={"class": "form-control", "type": "number"}),
+            "total_cost": forms.TextInput(attrs={"class": "form-control", "type": "number"}),
             "date_stocked": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "qty_on_hand": forms.NumberInput(attrs={"class": "form-control"}),
             "consumed_today": forms.NumberInput(attrs={"class": "form-control"}),

@@ -3,7 +3,7 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
+from .forms import IndexForm
 from .models import Baby
 from .forms import BabyForm
 from .models import Sitter, SitterPayment
@@ -22,16 +22,10 @@ from .forms import DollForm
 from .forms import DollSaleForm
 
 
-
-
 # Create your views here.
-
-
-
-
-
-def index(request):
     
+def index(request):
+    form = IndexForm(request.POST or None)
     images = [
         '/static/images/badge.png',
         '/static/images/two.jpg',
@@ -39,10 +33,21 @@ def index(request):
         '/static/images/play.jpg',
         '/static/images/dimple.jpg',
     ]
-    return render(request, 'index.html', {'images': images})
+    if request.method == 'POST':
+        if form.is_valid():
+            # Process login credentials
+            # Redirect to appropriate page
+            pass
+    
+    context = {
+        'form': form,
+        'images': images
+    }
+    
+    return render(request, 'index.html', context)
 
-def board(request):
-    return render(request, 'board.html')
+
+
 
 def dashb(request):
     return render(request, 'dashb.html')
@@ -309,7 +314,7 @@ def editts(request, id):
 def deletees(request, id):
     if request.method == "POST":
         supply = Supply.objects.get(pk=id)
-        supply.deletees()
+        supply.delete()
     return HttpResponseRedirect(reverse("supply"))
 
 def doll(request):
@@ -369,7 +374,7 @@ def edittts(request, id):
 def deleteees(request, id):
     if request.method == "POST":
         doll = Doll.objects.get(pk=id)
-        doll.deleteees()
+        doll.delete()
     return HttpResponseRedirect(reverse("doll"))
 
 def dollsale(request):
@@ -431,7 +436,7 @@ def editttt(request, id):
 def deleteeee(request, id):
     if request.method == "POST":
         doll = DollSale.objects.get(pk=id)
-        doll.deleteeee()
+        doll.delete()
     return HttpResponseRedirect(reverse("dollsale"))
 
 

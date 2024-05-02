@@ -24,8 +24,6 @@
                                     <th scope="col">Religion</th>
                                     <th scope="col">Level of Education</th>
                                     <th scope="col">Sitter Number</th>
-                                    <th scope="col">Availability Status</th>
-                                    <th scope="col">Amount Paid to Sitter</th>
                                     <th scope="col">Sitter's Contact</th>
                                     <th scope="col">ACTIONS</th>
                                   </tr>
@@ -44,8 +42,6 @@
                                     <td>{{ sitter.religion }}</td>
                                     <td>{{ sitter.educ_level }}</td>
                                     <td>{{ sitter.s_number }}</td>
-                                    <td>{{ sitter.avail_status }}</td>
-                                    <td>UGX.{{ sitter.payment }}</td>
                                     <td>{{ sitter.s_contact }}</td>
                                     <td>
                                       <button type="button" class="btn btn-success me-1" href="{% url 'view_sitter' sitter.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitter.id}}"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
@@ -86,8 +82,6 @@
                                                     <li>Religion: <strong>{{ sitter.religion}}</strong></li>
                                                     <li>Level of Education: <strong>{{ sitter.educ_level }}</strong></li>
                                                     <li>Sitter Number: <strong>{{ sitter.s_number }}</strong></li>
-                                                    <li>Availability Status: <strong>{{ sitter.avail_status }}</strong></li>
-                                                    <li>Amount Paid to Sitter: <strong>{{ sitter.payment }}</strong></li>
                                                     <li>Sitter's Contact: <strong>{{sitter.s_contact}}</strong></li>
                                                   </ul>
                                                 </div>

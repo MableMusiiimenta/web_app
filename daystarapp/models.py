@@ -2,8 +2,19 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-
+from django.core.exceptions import ValidationError
+import re
 # Create your models here.
+
+def validate_two_names(value):
+    parts = value.strip().split()
+    if len(parts) != 2:
+        raise ValidationError('Please enter both first name and last name.')
+
+class Index(models.Model):
+    username = models.CharField(max_length=50, verbose_name="Administrator's Name", validators=[validate_two_names])
+    password = models.CharField(max_length=50, verbose_name="Admin Password")
+
 STAY = (
     ('Morning', 'Morning'),
     ('Afternoon', 'Afternoon'),
@@ -15,16 +26,28 @@ class Categorystay(models.Model):
     def __str__(self):
         return self.name
 
+def validate_two_digit_integer(value):
+    if not (value.isdigit() and 0 <= int(value) < 100):
+        raise ValidationError('Value must be a two-digit integer')
+
+
+def validate_phone_number(value):
+    pattern = r'^\d{10}$'  # Regular expression for a 10-digit phone number
+    if not re.match(pattern, value):
+        raise ValidationError('Please enter a valid 10-digit phone number.')
+
+
+
 
 class Baby(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    baby_number = models.PositiveIntegerField(null=True, blank=True, default=0)
+    baby_number = models.CharField(max_length=4,null=True, blank=True, default=0, validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
     gender = models.CharField(max_length=10, null=True, blank=True)
     age = models.PositiveIntegerField()
     location = models.CharField(max_length=50, null=True, blank=True)
-    parent_name = models.CharField(max_length=50, null=True, blank=True)
-    parent_contact = models.CharField(max_length=50, null=True, blank=True)
+    parent_name = models.CharField(max_length=50, null=True, blank=True,validators=[validate_two_names])
+    parent_contact = models.CharField(max_length=50, null=True, blank=True, validators=[validate_phone_number])
     def __str__(self):
         return f"Baby: {self.first_name} {self.last_name}"
     
@@ -52,14 +75,14 @@ class Sitter(models.Model):
     l_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="Last Name")
     l_location = models.CharField(max_length=50, null=True, blank=True, verbose_name="Location")
     dob = models.DateField(null=True, blank=True, verbose_name="Date of Birth")
-    nok = models.CharField(max_length=50, null=True, blank=True, verbose_name="Next of Kin")
+    nok = models.CharField(max_length=50, null=True, blank=True, verbose_name="Next of Kin", validators=[validate_two_names])
     nin = models.CharField(max_length=50, null=True, blank=True, verbose_name="National ID Number")
-    rec_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="Recommender's Name")
-    rec_contact = models.CharField(max_length=10, null=True, blank=True, verbose_name="Recommender's Contact")
+    rec_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="Recommender's Name", validators=[validate_two_names])
+    rec_contact = models.CharField(max_length=10, blank=True, verbose_name="Recommender's Contact", validators=[validate_phone_number])
     religion = models.CharField(max_length=50, choices=RELIGION_CHOICES, null=True, blank=True, verbose_name="Religious Affiliation")
     educ_level = models.CharField(max_length=50, choices=EDUCATION_CHOICES, null=True, blank=True, verbose_name="Level of Education")
-    s_number = models.IntegerField(null=True, blank=True, verbose_name="Sitter Number")
-    s_contact = models.IntegerField(null=True, blank=True, verbose_name="Sitter's Contact")
+    s_number = models.CharField(max_length=4, null=True, blank=True, verbose_name="Sitter Number",validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
+    s_contact = models.CharField(max_length=10, null=True, blank=True, verbose_name="Sitter's Contact", validators=[validate_phone_number])
 
 
     def __str__(self):
@@ -74,11 +97,11 @@ PAYMENT_METHOD = (
 
 class At_school(models.Model):
     arrival_time = models.DateTimeField(verbose_name="Time of Arrival")
-    bringer_name = models.CharField(max_length=50,null=True, blank=True, verbose_name="Baby brought in by:")
+    bringer_name = models.CharField(max_length=50,null=True, blank=True, verbose_name="Baby brought in by:", validators=[validate_two_names])
     period_of_stay = models.CharField(max_length=50, choices=STAY, null=True, blank=True)
     l_name = models.ForeignKey(Sitter,max_length=50, on_delete=models.CASCADE, blank=True, verbose_name="Assigned to Sitter")
     departure_time = models.DateTimeField(verbose_name="Time of Departure")
-    taker_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="Baby picked by:")
+    taker_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="Baby picked by:",validators=[validate_two_names])
     comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Comment")
     def __str__(self):
         return f"{self.l_name} - {self.arrival_time} - {self.departure_time}"
