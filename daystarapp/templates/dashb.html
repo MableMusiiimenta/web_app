@@ -1,34 +1,13 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DayStar Daycare Management</title>
-<link rel="icon" href="{% static 'images/badge.ico' %}" type="image/x-icon"/>
-<link rel="stylesheet" href="{% static 'css/dashb.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
+{% extends "babies/base.html" %}
 
+{% block body %}
+<div class="content">
 <div class="container-fluid">
- <div class="row">   
-    <nav class="sidebar close col-3">
-      <header>
-        <div class="image-text">
-          <span class="image">
-            <img src="{% static 'images/badge.png' %}" alt="badge">
-          </span>
+ <div class="row"> 
+  
 
-          <div class="text header-text">
-            <span class="name">Dashboard</span>
-            <span class="profession">Daystar Daycare</span>
-          </div>
-        </div>
-        <i class="fa-solid fa-chevron-right toggle"></i>
-      </header>
+  <div class="col-2">
+    <div class="sidebar">
 
       <div class="menu-bar">
         <div class="menu">
@@ -90,43 +69,79 @@
               <span class="text nav-text">Logout</span>
             </a>
           </li>
-          <li class="mode">
-            <div class="moon-sun">
-              <i class="fa-solid fa-moon icon moon"></i>
-              <i class="fa-solid fa-sun icon sun"></i>
-            </div>
-
-            <span class="mode-text text">Dark Mode</span>
-
-            <div class="toggle-switch">
-              <span class="switch">
-
-              </span>
-            </div>
-
-
-          </li>
+          
         </div>
       </div>
-    </nav>
-
-    <section class="home col-9">
-      <div class="text">Dashboard</div>
-      <div id="dashboard-content">
-        <div class="card">
-          <div class="card-body">
-            This is some text within a card body.
-          </div>
+    </div>
+  </div>
+    
+  <div class="home col-10" id="content-container">
+    <div class="text">Dashboard</div>
+    <div id="dashboard-content">
+      <div class="card" style="height: 535px; width:1570px; background-color:#355070; color:#e3f2fd;">
+        <div class="card-body">
+          This is some text within a card body.
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </div>
+    
+</div>
+
+<style>
+  .sidebar{
+    margin-left:-25px;
+    position: sticky;
+    top: 0;
+    height: 60vh;
+    background-color: #355070;
+    color: #e3f2fd;
+    border-radius: 10px;
+  }
+  .menu-bar {
+    padding: 20px;
+}
+
+.menu-links {
+    list-style-type: none;
+}
+
+.menu-links li {
+  font-family: serif;
+  font-size: 20px;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+.menu-links li:hover{
+  background-color: #e3f2fd;
+  color: #355070;
+}
+.menu-links li a {
+  position: relative;
+  color: #e3f2fd;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+.menu-links li a:hover{
+  border-color: #355070;
+  color:#355070
+}
+
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="{% static 'js/script.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+// JavaScript/jQuery to load content dynamically
+$(document).ready(function() {
+  $('.nav-link').click(function(e) {
+    e.preventDefault(); // Prevent default link behavior
+    var url = $(this).attr('href'); // Get the URL from the clicked link
+    $.get(url, function(data) {
+      $('#content-container').html(data); // Load content into the container
+    });
+  });
+});
+</script>
 
-
-
-</body>
-</html>
+{% endblock %}

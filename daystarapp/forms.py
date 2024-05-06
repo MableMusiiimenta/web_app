@@ -1,4 +1,5 @@
 from django import forms
+from django.shortcuts import render, redirect
 from .models import Baby
 from .models import Sitter
 from .models import Babyfee
@@ -8,21 +9,32 @@ from .models import Doll
 from .models import DollSale
 from .models import At_school
 from .models import In_school
-from .models import Index
+from .models import Admin_login
 from django.core.exceptions import ValidationError
 
 
-class IndexForm(forms.ModelForm):
+class Admin_loginForm(forms.ModelForm):
     class Meta:
-        model = Index
-        fields = ['username', 'password']
-        widgets = {
-            'password': forms.PasswordInput(),
+        model = Admin_login
+        fields = ['username', 'email', 'password']
+        labels = {
+            "username": "Administrator's Name",
+            "email": "Administrator's Email",
+            "password": "Admin Password",
         }
-
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter full name"}),
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter email"}),
+            "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter password"}),
+        }
+    def clean_username(self):
+        value = self.cleaned_data["username"]
+        parts = value.strip().split()
+        if len(parts) != 2:
+            raise forms.ValidationError("Please enter both first name and last name.")
+        return value
     
-
-
+    
 class BabyForm(forms.ModelForm):
     class Meta:
         model = Baby

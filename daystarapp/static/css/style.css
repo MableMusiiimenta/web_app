@@ -1,8 +1,29 @@
+#hero{text-align: center;
+
+}
+
+
+
+@keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .blink {
+    animation: blink 3s infinite;
+  }
 
 * {box-sizing: border-box;
 }
 
-body, html {margin: 0; padding: 0; background-color: rgb(1,15,39); opacity: 0.9;}
+body, html {font-family:serif;  margin: 0; padding: 0; background-color: #e3f2fd; opacity: 0.9;}
    
 
 img {vertical-align: middle;}
@@ -51,35 +72,14 @@ img {vertical-align: middle;}
 .mySlides {display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; animation: slideLeft 4s linear infinite, fade 4s ease infinite; background-position: center;} 
 
 
-#badge{
-    height: 100px;
-    padding-top: -300px;
-    margin-top: 10px;
-    margin-bottom: 300px;
-    margin-left: -300px;
-}
-
 .navbar {
-    background-color: rgb(1, 15, 39);
+    background-color: #2d6a4f;
     opacity: 0.9;
 
     margin-bottom: 30px;
-    padding-top: 40px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
-h1 {
-    text-align: center;
-    font-size: 58px;
-    color: aliceblue;
-    font-family: 'Times New Roman', serif;
-    letter-spacing: 6px;
-    text-shadow: 1px rgb(1,15,39);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: center;
-    
-}  
 
     
 .logo-img {
@@ -94,13 +94,4 @@ h1 {
     align-items: center;
     margin-top: 50px;
 }
-    
-    
-.footer {
-    margin-top: 60px;
-    
-    font-style: Times New Roman;
-    color: white;
-    text-align: center;
-}
-    
+  

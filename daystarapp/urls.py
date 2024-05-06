@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import index
+from .views import admin_login
 from .views import serve_js
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
@@ -10,7 +10,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path("", views.index, name="index"),
-
+    path('admin_login/', admin_login, name='admin_login'),
 
     path("dashb/", views.dashb, name="dashb"),
 

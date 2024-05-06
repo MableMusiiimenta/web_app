@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 import re
+from django.core.validators import EmailValidator
 # Create your models here.
 
 def validate_two_names(value):
@@ -11,9 +12,11 @@ def validate_two_names(value):
     if len(parts) != 2:
         raise ValidationError('Please enter both first name and last name.')
 
-class Index(models.Model):
+class Admin_login(models.Model):
     username = models.CharField(max_length=50, verbose_name="Administrator's Name", validators=[validate_two_names])
+    email = models.CharField(max_length=100, verbose_name="Administrator's Email", validators=[EmailValidator(message="Enter a valid email address.")])
     password = models.CharField(max_length=50, verbose_name="Admin Password")
+    
 
 STAY = (
     ('Morning', 'Morning'),

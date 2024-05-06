@@ -10,97 +10,92 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="icon" href="{% static 'images/badge.ico' %}" type="image/x-icon"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <style>
+      .navbar{
+        font-family: serif;
+        font-size: 20px;
+      }
+      .body{
+        background-color: #e3f2fd;
+        font-family: serif;
+        font-size: 18px;
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: #355070;
+      }
+      .footer .copyright {
+        margin-top: 1px;
+        text-align: center;
+        font-size: 16px;
+        color: #e3f2fd;
+      }
+    </style>
 
 </head>
-<body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg bg-danger" data-bs-theme="dark">
+<body class="d-flex flex-column min-vh-100" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand-lg" style="background-color: #355070;">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'baby' %}">
-            <img src="{% static 'images/badge.png' %}" alt="{{ badge }}"> DayStar Management</a>
+            <img src="{% static 'images/badge1.png' %}" alt="{{ badge }}"> </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'baby' %}"><i class="fa-solid fa-list fa-lg"></i> Babies</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'sitter' %}"><i class="fa-solid fa-list fa-lg"></i> Sitters</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'at_school' %}"><i class="fa-solid fa-list fa-lg"></i> Daily Baby Records</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'in_school' %}"><i class="fa-solid fa-list fa-lg"></i> Daily Sitter Records</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-list fa-lg"></i> Procurement</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'doll' %}"><i class="fa-solid fa-list fa-lg"></i> Dolls</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'dollsale' %}"><i class="fa-solid fa-list fa-lg"></i> Dollsales</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'supply' %}"><i class="fa-solid fa-list fa-lg"></i> Daycare Supplies</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'babyfee' %}"><i class="fa-solid fa-plus fa-lg"></i> Fees Payments</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'sitterpayment' %}"><i class="fa-solid fa-plus fa-lg"></i> Sitter Payments</a>
-              </li>
-
-
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'add' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Babies</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'adds' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Sitters</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'addd' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Baby's Day</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'adddd' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Sitter's Day</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'addds' %}"><i class="fa-solid fa-plus fa-lg"></i> Record Supplies</a>
-              </li>
-
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'adddds' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Doll</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'addddd' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Doll Sale</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'adi' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Fees Payment</a>
-            </li>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'addi' %}"><i class="fa-solid fa-plus fa-lg"></i> Add Sitter Payment</a>
-          </li>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #e3f2fd;">
+                  Babies
+                </a>
+                <ul class="dropdown-menu"  style="background-color: #355070;">
+                  <li><a class="dropdown-item" href="{% url 'baby' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>All Babies</a></li>
+                  <li><a class="dropdown-item" href="{% url 'at_school' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Daily Baby Records</a></li>
+                  <li><a class="dropdown-item" href="{% url 'babyfee' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Fees Payments</a></li>
+                  <li><a class="dropdown-item" href="{% url 'add' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Babies</a></li>
+                  <li><a class="dropdown-item" href="{% url 'addd' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Record Baby's Day</a></li>
+                  <li><a class="dropdown-item" href="{% url 'adi' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Fees Payment</a></li>
+                </ul>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #e3f2fd;">
+                    Sitters
+                  </a>
+                  <ul class="dropdown-menu" style="background-color: #355070;">
+                    <li><a class="dropdown-item" href="{% url 'sitter' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>All Sitters</a></li>
+                    <li><a class="dropdown-item" href="{% url 'in_school' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Daily Sitter Records</a></li>
+                    <li><a class="dropdown-item" href="{% url 'sitterpayment' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Sitter Payments</a></li>
+                    <li><a class="dropdown-item" href="{% url 'adds' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Sitters</a></li>
+                    <li><a class="dropdown-item" href="{% url 'adddd' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Record Sitter's Day</a></li>
+                    <li><a class="dropdown-item" href="{% url 'addi' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Sitter Payment </a></li>
+                  </ul>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #e3f2fd;">
+                      Procurement
+                    </a>
+                    <ul class="dropdown-menu" style="background-color: #355070;" >
+                      <li><a class="dropdown-item" href="{% url 'supply' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i> Daycare Supplies</a></li>
+                      <li><a class="dropdown-item" href="{% url 'addds' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i>Record Supplies</a></li>
+                      <li><a class="dropdown-item" href="{% url 'doll' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Dolls</a></li>
+                      <li><a class="dropdown-item" href="{% url 'adddds' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Doll</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dollsale' %}" style="color: #e3f2fd;"><i class="fa-solid fa-list fa-lg"></i>Dollsales</a></li>
+                      <li><a class="dropdown-item" href="{% url 'addddd' %}" style="color: #e3f2fd;"><i class="fa-solid fa-plus fa-lg"></i> Add Doll Sale</a></li>
+                    </ul>
              </ul>
           </div>
         </div>
       </nav>
      <div class="container-fluid">
         {% block body %}
+        
+
         {% endblock %}                              
      </div>
-     <footer class="mt-auto mb-4">
-        <div class="text-center">
-            <span>
-                Copyright &copy; <script>document.write(new Date().getFullYear())</script>DayStar Daycare Center.
-            </span>
-        </div>
-     </footer>
+     <footer class="footer">
+      <p class="copyright">
+          <script>document.write(new Date().getFullYear())</script> <span style="font-weight: bold;">&copy;</span> Daystar Daycare Centre | All Rights Reserved
+      </p>
+    </footer>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
      <script src="{% static 'js/custom.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 

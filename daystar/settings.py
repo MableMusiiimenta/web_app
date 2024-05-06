@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "daystarapp",
     "bootstrap_datepicker_plus",
 ]
-
+LOGIN_URL = '/admin_login/'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Africa/Kampala"
 
 USE_I18N = True
 

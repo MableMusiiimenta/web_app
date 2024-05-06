@@ -3,7 +3,9 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import IndexForm
+from django.contrib.auth.models import User
+from .forms import Admin_loginForm
+from django.contrib.auth.decorators import login_required
 from .models import Baby
 from .forms import BabyForm
 from .models import Sitter, SitterPayment
@@ -25,30 +27,54 @@ from .forms import DollSaleForm
 # Create your views here.
     
 def index(request):
-    form = IndexForm(request.POST or None)
+    
     images = [
-        '/static/images/badge.png',
         '/static/images/two.jpg',
-        '/static/images/sitting.jpg',
         '/static/images/play.jpg',
-        '/static/images/dimple.jpg',
     ]
+    return render(request, 'index.html', {'images': images})
+
+def set_user_password(username, password):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return False
+    
+    # Set the password for the user
+    user.set_password(password)
+    
+    # Save the user object to update the password
+    user.save()
+    
+    return True
+
+def admin_login(request):
     if request.method == 'POST':
+        form = Admin_loginForm(request.POST)
         if form.is_valid():
-            # Process login credentials
-            # Redirect to appropriate page
-            pass
-    
-    context = {
-        'form': form,
-        'images': images
-    }
-    
-    return render(request, 'index.html', context)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            # Call the set_user_password function
+            if set_user_password(username, password):
+                # Process login logic here if needed
+                return redirect('dashb')  # Redirect to dashboard on successful login
+            else:
+                # Handle the case where the user does not exist
+                # or any other error occurred
+                # For example, you could add an error message to the form
+                form.add_error(None, "User does not exist.")
+    else:
+        form = Admin_loginForm()
+
+    # If the form is not valid or it's a GET request, render the form template
+    return render(request, 'admin_login.html', {'form': form})
 
 
 
 
+@login_required
 def dashb(request):
     return render(request, 'dashb.html')
 def serve_js(request):
