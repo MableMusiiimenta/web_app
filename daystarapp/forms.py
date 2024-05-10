@@ -8,8 +8,9 @@ from .models import Supply
 from .models import Doll
 from .models import DollSale
 from .models import At_school
-from .models import In_school
+from .models import Shift
 from .models import Admin_login
+from .models import Monthlyfee
 from django.core.exceptions import ValidationError
 
 
@@ -27,12 +28,6 @@ class Admin_loginForm(forms.ModelForm):
             "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter email"}),
             "password": forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter password"}),
         }
-    def clean_username(self):
-        value = self.cleaned_data["username"]
-        parts = value.strip().split()
-        if len(parts) != 2:
-            raise forms.ValidationError("Please enter both first name and last name.")
-        return value
     
     
 class BabyForm(forms.ModelForm):
@@ -54,7 +49,7 @@ class BabyForm(forms.ModelForm):
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
             "baby_number": forms.NumberInput(attrs={"class": "form-control"}),
-            "gender": forms.TextInput(attrs={"class": "form-control"}),
+            "gendr": forms.TextInput(attrs={"class": "form-control"}),
             "age": forms.NumberInput(attrs={"class": "form-control"}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
             "parent_name": forms.TextInput(attrs={"class": "form-control"}),
@@ -146,6 +141,30 @@ class BabyfeeForm(forms.ModelForm):
             
         }
 
+class MonthlyfeeForm(forms.ModelForm):
+    class Meta:
+        model = Monthlyfee
+        fields = ["l_name", "pay_for", "amount_due", "amount_paid", "payment_date", "payment_method"]
+        labels = {
+            "l_name": "For",
+            "pay_for": "Pay For",
+            "amount_due": "Amount Due",
+            "amount_paid": "Amount Paid",
+            "payment_date": "Date of Payment",
+            "payment_method": "Mode of Payment",
+        
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "for": forms.TextInput(attrs={"class": "form-control"}),
+            "due": forms.NumberInput(attrs={"class": "form-control"}),
+            "paid": forms.NumberInput(attrs={"class": "form-control"}),
+            "payment_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
+            "method": forms.TextInput(attrs={"class": "form-control"}),
+            
+        }
+
+
 class SitterPaymentForm(forms.ModelForm):
     class Meta:
         model = SitterPayment
@@ -229,19 +248,21 @@ class DollSaleForm(forms.ModelForm):
             "total_amount": forms.TextInput(attrs={"class": "form-control", "type": "number"}),
         }
 
-class In_schoolForm(forms.ModelForm):
+class ShiftForm(forms.ModelForm):
     class Meta:
-        model = In_school
-        fields = ["l_name", "avail_status", "babies_attd", "payment"]
+        model = Shift
+        fields = ["l_name", "date", "period", "start_time", "end_time"]
         labels = {
             "l_name": "Name of Sitter",
-            "avail_status": "Availability Status",
-            "babies_attd": "Babies Assigned",
-            "payment": "Amount Paid to Sitter",
+            "date": "Date",
+            "period": "Period",
+            "start_time": "Start Time",
+            "end_time": "End Time",
         }
         widgets = {
-            "sitter": forms.TextInput(attrs={"class": "form-control"}),
-            "avail": forms.TextInput(attrs={"class": "form-control"}),
-            "assigned": forms.TextInput(attrs={"class": "form-control"}),
-            "payment": forms.TextInput(attrs={"class": "form-control"}),
+            "lname": forms.TextInput(attrs={"class": "form-control"}),
+            "date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "priod": forms.TextInput(attrs={"class": "form-control"}),
+            "start_time": forms.TimeInput(attrs={"class": "form-control", "type": "time"}),
+            "end_time": forms.TimeInput(attrs={"class": "form-control", "type": "time"}),
         }

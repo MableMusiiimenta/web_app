@@ -1,37 +1,48 @@
 {% extends "babies/base.html" %}
 
 {% block body %}
-        <h3 class="m-4">All Sitters</h3>
-        <div class="row">
-            <div class="col-12">
-              <input type="text" id="datepicker">
-                {% if sitters %}
-                <div class="card bg-light ms-4 me-4 mb-4">
-                    <div class="card-header"><i class="fa-solid fa-list fa-lg"></i> Sitters' Records </div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Date of Birth</th>
-                                    <th scope="col">Next of Kin</th>
-                                    <th scope="col">National ID Number</th>
-                                    <th scope="col">Recommender's Name</th>
-                                    <th scope="col">Recommender's Contact</th>
-                                    <th scope="col">Religion</th>
-                                    <th scope="col">Level of Education</th>
-                                    <th scope="col">Sitter Number</th>
-                                    <th scope="col">Sitter's Contact</th>
-                                    <th scope="col">ACTIONS</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                 {% for sitter in sitters %}
-                                 <tr>
+    <h3 class="m-4">All Sitters</h3>
+    <div class="row">
+        <div class="col-12">
+            {% if sitters %}
+                <div class="table-responsive">
+                    <style>
+                        table {
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+
+                        th, td {
+                            padding: 8px;
+                            text-align: left;
+                            border-bottom: 1px solid #DDD;
+                        }
+
+                        tr:hover {
+                            background-color: #cbf3f0;
+                        }
+                    </style>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Next of Kin</th>
+                                <th scope="col">National ID Number</th>
+                                <th scope="col">Recommender's Name</th>
+                                <th scope="col">Recommender's Contact</th>
+                                <th scope="col">Religion</th>
+                                <th scope="col">Level of Education</th>
+                                <th scope="col">Sitter Number</th>
+                                <th scope="col">Sitter's Contact</th>
+                                <th scope="col">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sitter in sitters %}
+                                <tr>
                                     <td>{{ sitter.f_name }}</td>
                                     <td>{{ sitter.l_name }}</td>
                                     <td>{{ sitter.l_location }}</td>
@@ -45,33 +56,32 @@
                                     <td>{{ sitter.s_number }}</td>
                                     <td>{{ sitter.s_contact }}</td>
                                     <td>
-                                      <button type="button" class="btn btn-success me-1" href="{% url 'view_sitter' sitter.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitter.id}}"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
+                                        <button type="button" class="btn me-1" href="{% url 'view_sitter' sitter.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitter.id}}" style="background-color: #2a9d8f; color:#e3f2fd;  margin-bottom:3px;"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
 
-                                      <a class="btn btn-warning me-1" href="{% url 'edits' sitter.id %}">
-                                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                      </a>
+                                        <a class="btn me-1" href="{% url 'edits' sitter.id %}" style="background-color: #2a9d8f; color:#e3f2fd; margin-bottom:3px;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
 
-                                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletes{{sitter.id}}">
-                                        <i class="fa-solid fa-trash fa-lg"></i>
-                                      </button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletes{{sitter.id}}" style="color: #e3f2fd;">
+                                            <i class="fa-solid fa-trash fa-lg"></i>
+                                        </button>
                                     </td>
+                                </tr>
 
-                                  </tr>
-                                 
-                                  <!--Modal - View Sitter-->
-                                        <div class="modal" id="myModal{{sitter.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title">
+                                <!--Modal - View Sitter-->
+                                <div class="modal" id="myModal{{sitter.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
                                                     Sitter: {{ sitter.f_name }} {{ sitter.l_name }}
-                                                  </h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <ul class="list-unstyled">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul class="list-unstyled">
                                                     <li>First Name: <strong>{{ sitter.f_name }}</strong></li>
                                                     <li>Last Name: <strong>{{ sitter.l_name }}</strong></li>
                                                     <li>Location: <strong>{{ sitter.l_location }}</strong></li>
@@ -80,64 +90,51 @@
                                                     <li>Next of Kin Contact: <strong>{{ sitter.nin }}</strong></li>
                                                     <li>Recommender's Name: <strong>{{ sitter.rec_name }}</strong></li>
                                                     <li>Recommender's Contact: <strong>{{ sitter.rec_contact }}</strong></li>
-                                                    <li>Religion: <strong>{{ sitter.religion}}</strong></li>
+                                                    <li>Religion: <strong>{{ sitter.religion }}</strong></li>
                                                     <li>Level of Education: <strong>{{ sitter.educ_level }}</strong></li>
                                                     <li>Sitter Number: <strong>{{ sitter.s_number }}</strong></li>
-                                                    <li>Sitter's Contact: <strong>{{sitter.s_contact}}</strong></li>
-                                                  </ul>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                              </div>
+                                                    <li>Sitter's Contact: <strong>{{ sitter.s_contact }}</strong></li>
+                                                </ul>
                                             </div>
-                                          </div>
-                                       
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="background-color: #2a9d8f; color:#e3f2fd;">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                          <!--Modal - Delete Sitter-->
-                                          <div class="modal" id="deletes{{sitter.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title">
+                                <!--Modal - Delete Sitter-->
+                                <div class="modal" id="deletes{{sitter.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
                                                     Sitter: {{ sitter.f_name }} {{ sitter.l_name }}
-                                                  </h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <p>Are you sure you want to delete this sitter?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <form action="{% url 'deletes' sitter.id %}" method="POST">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this sitter?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'deletes' sitter.id %}" method="POST">
                                                     {% csrf_token %}
                                                     <input type="submit" class="btn btn-danger" value="delete">
-                                                  </form>
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                </div>
-                                              </div>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #2a9d8f; color:#e3f2fd;">Cancel</button>
                                             </div>
-                                          </div>
-                                    </td>
-                                 </tr>
-                                 {% endfor %}
-                                
-                              </tbody>
-                              </table>
-                        </div>
-                      </p>
-                    </div>
-                {% else %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
                 <h5 class="alert alert-primary ms-4 me-4">No Sitter Records</h5>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-        <script>
-          $(document).ready(function() {
-              $('#datepicker').datepicker();
-          });
-      </script>
+    </div>
 {% endblock %}

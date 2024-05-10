@@ -57,7 +57,7 @@ ROOT_URLCONF = "daystar.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(ROOT_URLCONF, "templates")],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],  # Update DIRS to point to your templates directory
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,6 +69,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "daystar.wsgi.application"
 
@@ -124,10 +125,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIECT_URL = 'dashb'
-LOGOUT_REDIECT_URL = '/'
+LOGIN_REDIRECT_URL = 'dashb'
+LOGOUT_REDIRECT_URL = '/'

@@ -6,13 +6,16 @@ from .views import serve_js
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-
+from .views import search_results
+from .views import search_another_model
 
 urlpatterns = [
     path("", views.index, name="index"),
     path('admin_login/', admin_login, name='admin_login'),
 
     path("dashb/", views.dashb, name="dashb"),
+    path('search/', search_results, name='search_results'),
+    path('search_another_model/', search_another_model, name='search_another_model'),
 
     path("script.js", serve_js, name="serve_js"),
 
@@ -37,6 +40,12 @@ urlpatterns = [
     path("edi/<int:id>/", views.edi, name="edi"),
     path("dele/<int:id>/", views.dele, name="dele"),
 
+    path("monthlyfee/", views.monthlyfee, name="monthlyfee"),
+    path("view_monthlyfee/<int:id>/", views.view_monthlyfee, name="view_monthlyfee"),
+    path("addt/", views.addt, name="addt"),
+    path("eddt/<int:id>/", views.eddt, name="eddt"),
+    path("delet/<int:id>/", views.delet, name="delet"),
+
 
     path("sitter/", views.sitter, name="sitter"),
     path("adds/", views.adds, name="adds"),
@@ -45,8 +54,8 @@ urlpatterns = [
     path("view_sitter/<int:id>/", views.view_sitter, name="view_sitter"),
 
 
-    path("in_school/", views.in_school, name="in_school"),
-    path("view_in_school/<int:id>/", views.view_in_school, name="view_in_school"),
+    path("shift/", views.shift, name="shift"),
+    path("view_shift/<int:id>/", views.view_shift, name="view_shift"),
     path("adddd/", views.adddd, name="adddd"),
     path("edittt/<int:id>/", views.edittt, name="edittt"),
     path("deleteee/<int:id>/", views.deleteee, name="deleteee"),

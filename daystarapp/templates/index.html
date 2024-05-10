@@ -13,25 +13,31 @@
   <link rel="icon" href="{% static 'images/badge.ico' %}" type="image/x-icon"/>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">  
   <style>
+
+    body{
+      background-image: url("");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
     
     .navbar {
       color: #e3f2fd;
-      background-color: #355070;
-      opacity: 0.9;
+      background-color: #2a9d8f;
   
       margin-bottom: 30px;
       padding-top: 5px;
       padding-bottom: 5px;
   }
     .btn{
-    background-color: #355070;
+    background-color: #2a9d8f;
     color: #e3f2fd;
     transition: 0.3s ease-in-out;
   }
 
 
     .btn:hover{
-    background-color: #355070;
+    background-color: #2a9d8f;
     color: #e3f2fd;
     transform: scale(1.2)translateY(-10px);
   }
@@ -48,7 +54,7 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-      background-color: #355070;
+      background-color: #2a9d8f;
     }
     .footer .copyright {
       margin-top: 1px;
@@ -62,24 +68,16 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-<div class="slideshow-container">
-  {% for image in images %}
-    <div class="mySlides fade">
-        <img src="{{ image }}" class="img-fluid" alt="carousel image" style="width:100%">
-    </div>
-  {% endfor %}
-</div>
-
 <div class="content">
   <header>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="col-sm-5" style="margin-left: 860px; padding-top:-100px">
-            <img src="{% static 'images/badge1.png' %}" class="img-fluid" alt="badge">
+            <img src="{% static 'images/badge1.png' %}" class="img-fluid" alt="badge" style="height: 100px;">
           </div>
-          <div class="col-sm-9" style="margin-left: 700px;">
-            <h1>DAY-STAR DAYCARE CENTRE</h1>
+          <div class="col-sm-9" style="margin-left: 715px;">
+            <h1><div style="margin-left:100px;">DAY-STAR</div> DAYCARE CENTRE</h1>
           </div>
         </div>
       </div>
@@ -90,7 +88,7 @@
 
 <section id="hero">
   <div class="container">
-    <h2 style="color: #000;">Welcome to Your Daycare Management System. </h2>
+    <h2 style="color: #000; margin-top:150px;">Welcome to Your Daycare Management System. </h2>
   </div>
 </section>
 

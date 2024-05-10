@@ -4,22 +4,22 @@
     <h3 class="text-center m-4">Update Record</h3>
     {% if success %}
         <div class="alert alert-success" role="alert">
-            Dollsale record updated successfully
-            <a href="{% url 'dollsale' %}" class="alert-link">Go to Dollsale Records.</a>
+            Record updated successfully
+            <a href="{% url 'shift' %}" class="alert-link">Go to Shifts.</a>
         </div>
     {% else %}
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card bg-light mb-3">
                     <div class="card-header" style="background-color: #2a9d8f; color:#e3f2fd">
-                        <i class="fa-solid fa-pen-to-square fa-lg"></i>Update Dollsale Records
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i>Update Shift Records
                     </div>
                     <div class="card-body" style="background-color: #e3f2fd;">
                      <form action="" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button type="submit" class="btn" style="background-color: #2a9d8f; color:#e3f2fd;">Update</button>
-                        <a href="{% url 'dollsale' %}" class="btn btn-secondary">Cancel</a>
+                        <a href="{% url 'shift' %}" class="btn btn-secondary">Cancel</a>
                      </form>
                     </div>
                 </div>

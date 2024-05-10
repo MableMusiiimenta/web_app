@@ -1,115 +1,116 @@
 {% extends "babies/base.html" %}
 
 {% block body %}
-        <h3 class="m-4">Sitter Payments</h3>
-        <div class="row">
-            <div class="col-12">
-                {% if sitterpayments %}
-                <div class="card bg-light ms-4 me-4 mb-4">
-                    <div class="card-header"><i class="fa-solid fa-list fa-lg"></i> Fees Payments </div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">Name of Sitter</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Number of Babies Attended To</th>
-                                    <th scope="col">Amount Paid to Sitter</th>
-                                    <th scope="col">ACTIONS</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                 {% for sitterpayment in sitterpayments %}
-                                 <tr>
+    <h3 class="m-4">Sitter Payments</h3>
+    <div class="row">
+        <div class="col-12">
+            {% if sitterpayments %}
+                <div class="table-responsive">
+                    <style>
+                      table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+
+                    th, td {
+                        padding: 8px;
+                        text-align: left;
+                        border-bottom: 1px solid #DDD;
+                    }
+
+                    tr:hover {
+                        background-color: #cbf3f0;
+                    }
+                    </style>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Name of Sitter</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Number of Babies Attended To</th>
+                                <th scope="col">Amount Paid to Sitter</th>
+                                <th scope="col">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sitterpayment in sitterpayments %}
+                                <tr>
                                     <td>{{ sitterpayment.l_name }}</td>
                                     <td>{{ sitterpayment.attendance_date }}</td>
                                     <td>{{ sitterpayment.number_of_babies }}</td>
                                     <td>{{ sitterpayment.payment_amount }}</td>
                                     <td>
-                                      <button type="button" class="btn btn-success me-1" href="{% url 'view_sitterpayment' sitterpayment.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitterpayment.id}}"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
+                                        <button type="button" class="btn me-1" href="{% url 'view_sitterpayment' sitterpayment.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitterpayment.id}}" style="background-color: #2a9d8f; color:#e3f2fd;  margin-bottom:3px;"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
 
-                                      <a class="btn btn-warning me-1" href="{% url 'edita' sitterpayment.id %}">
-                                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                      </a>
+                                        <a class="btn me-1" href="{% url 'edita' sitterpayment.id %}" style="background-color: #2a9d8f; color:#e3f2fd;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
 
-                                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delee{{sitterpayment.id}}">
-                                        <i class="fa-solid fa-trash fa-lg"></i>
-                                      </button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delee{{sitterpayment.id}}" style="color: #e3f2fd;">
+                                            <i class="fa-solid fa-trash fa-lg"></i>
+                                        </button>
                                     </td>
+                                </tr>
 
-                                  </tr>
-                                 
-                                  <!--Modal - View Baby-->
-                                        <div class="modal" id="myModal{{sitterpayment.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title">
+                                <!--Modal - View Record-->
+                                <div class="modal" id="myModal{{sitterpayment.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
                                                     Sitterpayment: {{ sitterpayment.attendance_date }} {{ sitterpayment.number_of_babies }}
-                                                  </h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <ul class="list-unstyled">
-                                                    
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul class="list-unstyled">
                                                     <li>Name of Sitter: <strong>{{ sitterpayment.l_name }}</strong></li>
                                                     <li>Date: <strong>{{ sitterpayment.attendance_date }}</strong></li>
                                                     <li>Number of Babies Attended To: <strong>{{ sitterpayment.number_of_babies }}</strong></li>
                                                     <li>Amount Paid to Sitter: <strong>{{ sitterpayment.payment_amount }}</strong></li>
-                                                  
-                                                  </ul>
-                                           
-                                                  </ul>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                              </div>
+                                                </ul>
                                             </div>
-                                          </div>
-                                       
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="background-color: #2a9d8f; color:#e3f2fd;">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                          <!--Modal - Delete Record-->
-                                          <div class="modal" id="delee{{sitterpayment.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title">
+                                <!--Modal - Delete Record-->
+                                <div class="modal" id="delee{{sitterpayment.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
                                                     Sitterpayment: {{ sitterpayment.attendance_date }} {{ sitterpayment.number_of_babies }}
-                                                  </h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <p>Are you sure you want to delete this record?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <form action="{% url 'delee' sitterpayment.id %}" method="POST">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this record?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'delee' sitterpayment.id %}" method="POST">
                                                     {% csrf_token %}
                                                     <input type="submit" class="btn btn-danger" value="delete">
-                                                  </form>
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                </div>
-                                              </div>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #2a9d8f; color:#e3f2fd;">Cancel</button>
                                             </div>
-                                          </div>
-                                    </td>
-                                 </tr>
-                                 {% endfor %}
-                                
-                              </tbody>
-                              </table>
-                        </div>
-                      </p>
-                    </div>
-                {% else %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
                 <h5 class="alert alert-primary ms-4 me-4">No Fees Payment Records</h5>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
+    </div>
 {% endblock %}

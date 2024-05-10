@@ -11,14 +11,14 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card bg-light mb-3">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: #2a9d8f; color:#e3f2fd">
                         <i class="fa-solid fa-pen-to-square fa-lg"></i>Update Doll Records
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: #e3f2fd;">
                      <form action="" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn" style="background-color: #2a9d8f; color:#e3f2fd;">Update</button>
                         <a href="{% url 'doll' %}" class="btn btn-secondary">Cancel</a>
                      </form>
                     </div>

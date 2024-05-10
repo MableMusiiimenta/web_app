@@ -11,18 +11,20 @@ from .forms import BabyForm
 from .models import Sitter, SitterPayment
 from.forms import SitterForm
 from .forms import SitterPaymentForm
-from .models import In_school
+from .models import Shift
 from .models import Babyfee
 from .forms import BabyfeeForm
+from .models import Monthlyfee
+from .forms import MonthlyfeeForm
 from .models import At_school
 from .forms import At_schoolForm
-from .forms import In_schoolForm
+from .forms import ShiftForm
 from .models import Supply
 from .forms import SupplyForm
 from .models import Doll, DollSale
 from .forms import DollForm
 from .forms import DollSaleForm
-
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
     
@@ -34,20 +36,7 @@ def index(request):
     ]
     return render(request, 'index.html', {'images': images})
 
-def set_user_password(username, password):
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        # Handle the case where the user does not exist
-        return False
-    
-    # Set the password for the user
-    user.set_password(password)
-    
-    # Save the user object to update the password
-    user.save()
-    
-    return True
+
 
 def admin_login(request):
     if request.method == 'POST':
@@ -56,20 +45,21 @@ def admin_login(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
 
-            # Call the set_user_password function
-            if set_user_password(username, password):
-                # Process login logic here if needed
+            # Authenticate user
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                # Log the user in
+                login(request, user)
                 return redirect('dashb')  # Redirect to dashboard on successful login
             else:
-                # Handle the case where the user does not exist
-                # or any other error occurred
-                # For example, you could add an error message to the form
-                form.add_error(None, "User does not exist.")
+                # Add error message for incorrect credentials
+                form.add_error(None, "Invalid username or password.")
     else:
         form = Admin_loginForm()
 
     # If the form is not valid or it's a GET request, render the form template
     return render(request, 'admin_login.html', {'form': form})
+
 
 
 
@@ -82,6 +72,15 @@ def serve_js(request):
         response = HttpResponse(f.read(), content_type='application/javascript')
     return response
 
+def search_results(request):
+    query = request.GET.get('q', '')  # Get the search query from the request
+    results = Baby.objects.filter(first_name__icontains=query) |  Baby.objects.filter(last_name__icontains=query)# Filter records based on the query
+    return render(request, 'search_results.html', {'results': results, 'query': query})
+
+def search_another_model(request):
+    query = request.GET.get('q', '')  # Get the search query from the request
+    results = Sitter.objects.filter(field__icontains=query) |  Sitter.objects.filter(last_name__icontains=query)  # Adjust filtering criteria based on your model
+    return render(request, 'search_another_model.html', {'results': results, 'query': query})
 def baby(request):
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
 
@@ -214,64 +213,65 @@ def deletee(request, id):
 
 
 
-#in_school view
-def in_school(request):
-    return render(request, "in_schools/in_school.html", {"in_schools": In_school.objects.all()} )
+#shift view
+def shift(request):
+    return render(request, "shifts/shift.html", {"shifts": Shift.objects.all()} )
 
-def view_in_school(request, id):
-    in_school = In_school.objects.get(pk=id)
-    return HttpResponseRedirect(reverse("in_school"))
+def view_shift(request, id):
+    shift = Shift.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("shift"))
 
 def adddd(request):
     if request.method == "POST":
-        form = In_schoolForm(request.POST)
+        form = ShiftForm(request.POST)
         if form.is_valid():
             new_l_name = form.cleaned_data["l_name"]
-            new_avail_status = form.cleaned_data["avail_status"]
-            new_babies_attd = form.cleaned_data["babies_attd"]
-            new_payment = form.cleaned_data["payment"]
+            new_date = form.cleaned_data["date"]
+            new_period = form.cleaned_data["period"]
+            new_start_time = form.cleaned_data["start_time"]
+            new_end_time = form.cleaned_data["end_time"]
 
-            new_in_school = In_school(
+            new_shift = Shift(
                 l_name=new_l_name,
-                avail_status=new_avail_status,
-                babies_attd=new_babies_attd,
-                payment=new_payment,
+                date=new_date,
+                period=new_period,
+                start_time=new_start_time,
+                end_time=new_end_time,
             )
-            new_in_school.save()
-            return render(request, "in_schools/adddd.html", {
-                "form": In_schoolForm(),
+            new_shift.save()
+            return render(request, "shifts/adddd.html", {
+                "form": ShiftForm(),
                 "success": True
             })
     else:
-        form = In_schoolForm()
+        form = ShiftForm()
 
-    return render(request, "in_schools/adddd.html", {
+    return render(request, "shifts/adddd.html", {
         "form": form
     })
 
 def edittt(request, id):
     if request.method == "POST":
-        in_school = In_school.objects.get(pk=id)
-        form = In_schoolForm(request.POST, instance=in_school)
+        shift = Shift.objects.get(pk=id)
+        form = ShiftForm(request.POST, instance=shift)
         if form.is_valid():
             form.save()
-            return render(request, "in_schools/edittt.html", {
+            return render(request, "shifts/edittt.html", {
                 "form": form,
                 "success": True
             })
     else:
-        in_school = In_school.objects.get(pk=id)
-        form = In_schoolForm(instance=in_school)
-    return render(request, "in_schools/edittt.html", {
+        shift = Shift.objects.get(pk=id)
+        form = ShiftForm(instance=shift)
+    return render(request, "shifts/edittt.html", {
             "form": form
         })
 
 def deleteee(request, id):
     if request.method == "POST":
-        in_school = In_school.objects.get(pk=id)
-        in_school.delete()
-    return HttpResponseRedirect(reverse("in_school"))
-
+        shift = Shift.objects.get(pk=id)
+        shift.delete()
+    return HttpResponseRedirect(reverse("shift"))
 
 
 def supply(request):
@@ -603,6 +603,71 @@ def dele(request, id):
         babyfee = Babyfee.objects.get(pk=id)
         babyfee.delete()
     return HttpResponseRedirect(reverse("babyfee"))
+
+def monthlyfee(request):
+    return render(request, "monthlyfees/monthlyfee.html", {"monthlyfees": Monthlyfee.objects.all()} )
+
+def view_monthlyfee(request, id):
+    monthlyfee = Monthlyfee.objects.get(pk=id)
+    return HttpResponseRedirect(reverse("monthlyfee"))
+
+def addt(request):
+    if request.method == "POST":
+        form = MonthlyfeeForm(request.POST)
+        if form.is_valid():
+            new_l_name = form.cleaned_data["l_name"]
+            new_pay_for = form.cleaned_data["pay_for"]
+            new_amount_due = form.cleaned_data["amount_due"]
+            new_amount_paid = form.cleaned_data["amount_paid"]
+            new_payment_date = form.cleaned_data["payment_date"]
+            new_payment_method = form.cleaned_data["payment_method"]
+
+            new_monthlyfee = Monthlyfee(
+                l_name=new_l_name,
+                pay_for=new_pay_for,
+                amount_due=new_amount_due,
+                amount_paid=new_amount_paid,
+                payment_date=new_payment_date,
+                payment_method=new_payment_method
+                
+            )
+            new_monthlyfee.save()
+            return render(request, "monthlyfees/addt.html", {
+                "form": MonthlyfeeForm(),
+                "success": True
+            })
+    else:
+        form = MonthlyfeeForm()
+
+    return render(request, "monthlyfees/addt.html", {
+        "form": form
+    })
+
+def eddt(request, id):
+    if request.method == "POST":
+        monthlyfee = Monthlyfee.objects.get(pk=id)
+        form = MonthlyfeeForm(request.POST, instance=monthlyfee)
+        if form.is_valid():
+            form.save()
+            return render(request, "monthlyfees/eddt.html", {
+                "form": form,
+                "success": True
+            })
+    else:
+        monthlyfee = Monthlyfee.objects.get(pk=id)
+        form = MonthlyfeeForm(instance=monthlyfee)
+    return render(request, "monthlyfees/eddt.html", {
+            "form": form
+        })
+
+def delet(request, id):
+    if request.method == "POST":
+        monthlyfee = Monthlyfee.objects.get(pk=id)
+        monthlyfee.delete()
+    return HttpResponseRedirect(reverse("monthlyfee"))
+
+
+
 
 def sitterpayment(request):
     return render(request, "sitterpayments/sitterpayment.html", {"sitterpayments": SitterPayment.objects.all()} )

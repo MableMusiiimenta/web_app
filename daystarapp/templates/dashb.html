@@ -1,147 +1,148 @@
-{% extends "babies/base.html" %}
+{% load static %}
 
-{% block body %}
-<div class="content">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DASHBOARD</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'images/badge.ico' %}" type="image/x-icon"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .row.content {height: 900px;
+      background-color: #e3f2fd;
+    font-size: 17px;}
+    .sidenav {
+      background-color:#2a9d8f;
+      height: 100%;
+      width: 300px;
+    }
+    .nav li a{color: #e3f2fd;
+    }
+    .well{
+      background-color: #2a9d8f;
+      color: #e3f2fd;
+    }
+        
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;} 
+    }
+    .nav li a:hover{background-color:#e3f2fd;
+    color:#000;}
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: #2a9d8f;
+    }
+    .footer .copyright {
+      margin-top: 1px;
+      text-align: center;
+      font-size: 16px;
+      color: #e3f2fd;
+    }
+  </style>
+</head>
+<body>
+
 <div class="container-fluid">
- <div class="row"> 
-  
-
-  <div class="col-2">
-    <div class="sidebar">
-
-      <div class="menu-bar">
-        <div class="menu">
-          <li class="search-box">
-              <i class="fa-solid fa-magnifying-glass icon"></i>
-              <input type="text" placeholder="Search...">
-          </li>
-          <ul class="menu-links">
-            <li class="nav-link">
-              <a href="{% url 'dashb' %}">
-                <i class="fa-solid fa-house icon"></i>
-                <span class="text nav-text">Dashboard</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="{% url 'sitter' %}">
-                <i class="fa-solid fa-person-breastfeeding icon"></i>
-                <span class="text nav-text">Sitters</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="{% url 'baby' %}">
-                <i class="fa-solid fa-child-reaching icon"></i>
-                <span class="text nav-text">Babies</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="{% url 'babyfee' %}">
-                <i class="fa-solid fa-receipt icon"></i>
-                <span class="text nav-text">Fees Payments</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="{% url 'supply' %}">
-                <i class="fa-solid fa-chart-simple icon"></i>
-                <span class="text nav-text">Procurement</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="{% url 'doll' %}">
-                <i class="fa-solid fa-baby icon"></i>
-                <span class="text nav-text">Dolls</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="fa-solid fa-circle icon"></i>
-                <span class="text nav-text">Other</span>
-              </a>
-            </li>
-          </ul>
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+      <ul class="nav navbar-nav">
+        <div>
+          <img src="{% static 'images/badge1.png' %}" class="img-fluid" alt="badge" style="height: 150px;">
+        </div><br>
+        <li><a href="{% url 'sitter' %}">Sitters</a></li>
+        <li><a href="{% url 'baby' %}">Babies</a></li>
+        <li><a href="{% url 'supply' %}">Daycare Supplies</a></li>
+      </ul><br>
+    </div>
+    
+    <div class="col-sm-9">
+      <div class="well">
+        <h4>Dashboard</h4>
+        <p>Hello Admin...</p>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="well">
+            <a href="{% url 'add' %}"><h4>Register Babies</h4></a>
+            <p>70 Registered Today</p> 
+          </div>
         </div>
-
-
-        <div class="bottom-content">
-          <li class="">
-            <a href="{% url 'index' %}">
-              <i class="fa-solid fa-right-from-bracket icon"></i>
-              <span class="text nav-text">Logout</span>
-            </a>
-          </li>
-          
+        <div class="col-sm-3">
+          <div class="well">
+            <a href="{% url 'adi' %}"><h4>Record Fees Payments</h4></a>
+            <p>Ugx.700000 Today</p> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <h4>Supply Inventory</h4>
+            <a href="{% url 'addds' %}"><p>Add Stock</p></a> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <a href="{% url 'dollsale' %}"><h4>Dollsales</h4></a>
+            <a href="{% url 'addddd' %}"><p>Record Sales</p></a> 
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-    
-  <div class="home col-10" id="content-container">
-    <div class="text">Dashboard</div>
-    <div id="dashboard-content">
-      <div class="card" style="height: 535px; width:1570px; background-color:#355070; color:#e3f2fd;">
-        <div class="card-body">
-          This is some text within a card body.
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Check Pending Fees Payments</p> 
+            <a href="{% url 'monthlyfee' %}"><p>Monthly Payments</p></a> 
+            <a href="{% url 'babyfee' %}"><p>Daily Payments</p></a> 
+            <p>Bills and Invoicing</p>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"><p>Check Emails</p></a> 
+            <a href="https://web.whatsapp.com/"><p>Check Whatsapp</p></a>
+            <a href="https://x.com/Musiii_mentaaa?t=j96fzWHqUthk4iVOc1wuyA&s=08"><p>Check Twitter</p></a> 
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Last Week</p>
+            <p>Babies Last Week</p> 
+            <p>Supplies Consumed Last Week</p> 
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="well">
+            <a href="{% url 'shift' %}"><p>Sitters on Duty</p></a>
+            <a href="{% url 'addi' %}"><p>Pay Sitters</p></a>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Staff Schedule</p> 
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-    
-</div>
 
-<style>
-  .sidebar{
-    margin-left:-25px;
-    position: sticky;
-    top: 0;
-    height: 60vh;
-    background-color: #355070;
-    color: #e3f2fd;
-    border-radius: 10px;
-  }
-  .menu-bar {
-    padding: 20px;
-}
+<footer class="footer">
+  <p class="copyright">
+      <script>document.write(new Date().getFullYear())</script> <span style="font-weight: bold;">&copy;</span> Daystar Daycare Centre | All Rights Reserved
+  </p>
+</footer>
 
-.menu-links {
-    list-style-type: none;
-}
 
-.menu-links li {
-  font-family: serif;
-  font-size: 20px;
-  margin-bottom: 15px;
-  padding: 10px;
-}
-.menu-links li:hover{
-  background-color: #e3f2fd;
-  color: #355070;
-}
-.menu-links li a {
-  position: relative;
-  color: #e3f2fd;
-  text-decoration: none;
-  padding: 5px 10px;
-}
-.menu-links li a:hover{
-  border-color: #355070;
-  color:#355070
-}
-
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script>
-// JavaScript/jQuery to load content dynamically
-$(document).ready(function() {
-  $('.nav-link').click(function(e) {
-    e.preventDefault(); // Prevent default link behavior
-    var url = $(this).attr('href'); // Get the URL from the clicked link
-    $.get(url, function(data) {
-      $('#content-container').html(data); // Load content into the container
-    });
-  });
-});
-</script>
-
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
