@@ -12,16 +12,39 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <style>
       .navbar{
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index:800;
         font-family: serif;
         font-size: 20px;
+        padding-top: 3px;
+        padding-bottom: 3px;
       }
+      .navbar-nav > li{
+        position: relative;
+      }
+      .navbar-nav > li:hover .dropdown-menu{
+        display: block;
+      }
+      .navbar-nav .nav-link::after {
+        display: none !important; /* Hide the arrow */
+    }
+      .dropdown-item:hover{
+      color: #e3f2fd;
+      background-color: #2a9d8f;
+    }
       .body{
+        padding-top: 80px;
         background-color: #e3f2fd;
         font-family: serif;
         font-size: 18px;
       }
       .footer {
-        background-color: #2a9d8f;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #006d77;
       }
       .footer .copyright {
         margin-top: 1px;
@@ -29,14 +52,18 @@
         font-size: 16px;
         color: #e3f2fd;
       }
+      .container-fluid {
+        margin-top: 50px;
+        position: relative;
+      }
     </style>
 
 </head>
 <body class="d-flex flex-column min-vh-100" style="background-color: #e3f2fd;">
     <nav class="navbar navbar-expand-lg" style="background-color: #2a9d8f">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'baby' %}">
-            <img src="{% static 'images/badge1.png' %}" alt="{{ badge }}"> </a>
+          <a class="navbar-brand" href="{% url 'baby' %}" style="color: #e3f2fd;">
+          <img src="{% static 'images/badge1.png' %}" alt="badge" style="height: 100px; padding-bottom:3px;">DAYSTAR DAYCARE CENTRE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

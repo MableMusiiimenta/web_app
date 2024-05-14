@@ -1,7 +1,8 @@
 {% extends "babies/base.html" %}
 
 {% block body %}
-    <h3 class="m-4">Monthly Payments</h3>
+<div class="container-fluid" style="padding-top: 80px;">
+    <h3 class="m-4" style="text-align: center; font-family:serif;">Monthly Payments</h3>
     <div class="row">
         <div class="col-12">
             {% if monthlyfees %}
@@ -29,6 +30,7 @@
                                 <th scope="col">Pay For</th>
                                 <th scope="col">Amount Due</th>
                                 <th scope="col">Amount Paid</th>
+                                <th scope="col">Amount Pending</th>
                                 <th scope="col">Mode of Payment</th>
                                 <th scope="col">Payment Date</th>
                                 <th scope="col">ACTIONS</th>
@@ -41,6 +43,7 @@
                                     <td>{{ monthlyfee.pay_for }}</td>
                                     <td>UGX.{{ monthlyfee.amount_due }}</td>
                                     <td>UGX.{{ monthlyfee.amount_paid }}</td>
+                                    <td>UGX.{{ monthlyfee.pending_amount }}</td>
                                     <td>{{ monthlyfee.payment_method }}</td>
                                     <td>{{ monthlyfee.payment_date }}</td>
 
@@ -77,6 +80,7 @@
                                                     <li>Pay For: <strong>{{ monthlyfee.pay_for }}</strong></li>
                                                     <li>Amount Due: <strong>{{ monthlyfee.amount_due }}</strong></li>
                                                     <li>Amount Paid: <strong>{{ monthlyfee.amount_paid }}</strong></li>
+                                                    <li>Amount Pending: <strong>{{ monthlyfee.pending_amount }}</strong></li>
                                                     <li>Mode of Payment: <strong>{{ monthlyfee.payment_method }}</strong></li>
                                                     <li>Payment Date: <strong>{{ monthlyfee.payment_date }}</strong></li>
                                                 </ul>
@@ -125,4 +129,5 @@
           {% endif %}
       </div>
   </div>
+</div>
 {% endblock %}

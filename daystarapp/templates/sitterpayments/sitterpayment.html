@@ -1,7 +1,8 @@
 {% extends "babies/base.html" %}
 
 {% block body %}
-    <h3 class="m-4">Sitter Payments</h3>
+<div class="container-fluid" style="padding-top: 80px;">
+    <h3 class="m-4" style="text-align: center; font-family:serif;">Sitter Payments</h3>
     <div class="row">
         <div class="col-12">
             {% if sitterpayments %}
@@ -17,6 +18,9 @@
                         text-align: left;
                         border-bottom: 1px solid #DDD;
                     }
+                    th{
+                        font-weight: 700;
+                    }
 
                     tr:hover {
                         background-color: #cbf3f0;
@@ -27,7 +31,6 @@
                             <tr>
                                 <th scope="col">Name of Sitter</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">Number of Babies Attended To</th>
                                 <th scope="col">Amount Paid to Sitter</th>
                                 <th scope="col">ACTIONS</th>
                             </tr>
@@ -37,8 +40,7 @@
                                 <tr>
                                     <td>{{ sitterpayment.l_name }}</td>
                                     <td>{{ sitterpayment.attendance_date }}</td>
-                                    <td>{{ sitterpayment.number_of_babies }}</td>
-                                    <td>{{ sitterpayment.payment_amount }}</td>
+                                    <td>UGX.{{ sitterpayment.payment_amount }}</td>
                                     <td>
                                         <button type="button" class="btn me-1" href="{% url 'view_sitterpayment' sitterpayment.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitterpayment.id}}" style="background-color: #2a9d8f; color:#e3f2fd;  margin-bottom:3px;"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
 
@@ -58,7 +60,7 @@
                                         <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">
-                                                    Sitterpayment: {{ sitterpayment.attendance_date }} {{ sitterpayment.number_of_babies }}
+                                                    Sitterpayment: {{ sitterpayment.l_name }} {{ sitterpayment.attendance_date }}
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
@@ -68,7 +70,6 @@
                                                 <ul class="list-unstyled">
                                                     <li>Name of Sitter: <strong>{{ sitterpayment.l_name }}</strong></li>
                                                     <li>Date: <strong>{{ sitterpayment.attendance_date }}</strong></li>
-                                                    <li>Number of Babies Attended To: <strong>{{ sitterpayment.number_of_babies }}</strong></li>
                                                     <li>Amount Paid to Sitter: <strong>{{ sitterpayment.payment_amount }}</strong></li>
                                                 </ul>
                                             </div>
@@ -85,7 +86,7 @@
                                         <div class="modal-content" style="background-color: #2a9d8f; color:#e3f2fd;">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">
-                                                    Sitterpayment: {{ sitterpayment.attendance_date }} {{ sitterpayment.number_of_babies }}
+                                                    Sitterpayment: {{ sitterpayment.l_name }} {{ sitterpayment.attendance_date }}
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true"></span>
@@ -113,4 +114,5 @@
             {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

@@ -25,6 +25,8 @@ from .models import Doll, DollSale
 from .forms import DollForm
 from .forms import DollSaleForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.db.models import Sum
 
 # Create your views here.
     
@@ -66,7 +68,11 @@ def admin_login(request):
 
 @login_required
 def dashb(request):
-    return render(request, 'dashb.html')
+    total_babies = Baby.objects.count()
+    # Pass the count to the template
+    total_fees = Babyfee.objects.aggregate(total_fees=Sum("amount_paid"))["total_fees"] or 0
+
+    return render(request, 'dashb.html', {'total_babies': total_babies, 'total_fees': total_fees})
 def serve_js(request):
     with open('static/script.js', 'rb') as f:
         response = HttpResponse(f.read(), content_type='application/javascript')
@@ -83,6 +89,7 @@ def search_another_model(request):
     return render(request, 'search_another_model.html', {'results': results, 'query': query})
 def baby(request):
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
+
 
 def view_baby(request, id):
     baby = Baby.objects.get(pk=id)
@@ -158,6 +165,7 @@ def addd(request):
     if request.method == "POST":
         form = At_schoolForm(request.POST)
         if form.is_valid():
+            new_first_name = form.cleaned_data["first_name"]
             new_arrival_time = form.cleaned_data["arrival_time"]
             new_bringer_name = form.cleaned_data["bringer_name"]
             new_period_of_stay = form.cleaned_data["period_of_stay"]
@@ -168,6 +176,7 @@ def addd(request):
        
 
             new_at_school = At_school(
+                first_name=new_first_name,
                 arrival_time=new_arrival_time,
                 bringer_name=new_bringer_name,
                 period_of_stay=new_period_of_stay,
@@ -215,7 +224,13 @@ def deletee(request, id):
 
 #shift view
 def shift(request):
-    return render(request, "shifts/shift.html", {"shifts": Shift.objects.all()} )
+    shifts = Shift.objects.all()
+
+    for shift in shifts:
+        shift.babies_assigned = shift.count_assigned_babies()
+
+    # Pass the list of shifts and total count of assignments for each sitter to the template
+    return render(request, "shifts/shift.html", {'shifts': shifts})
 
 def view_shift(request, id):
     shift = Shift.objects.get(pk=id)
@@ -230,6 +245,7 @@ def adddd(request):
             new_period = form.cleaned_data["period"]
             new_start_time = form.cleaned_data["start_time"]
             new_end_time = form.cleaned_data["end_time"]
+            new_babies_assigned = form.cleaned_data["babies_assigned"]
 
             new_shift = Shift(
                 l_name=new_l_name,
@@ -237,6 +253,7 @@ def adddd(request):
                 period=new_period,
                 start_time=new_start_time,
                 end_time=new_end_time,
+                babies_assigned=new_babies_assigned,
             )
             new_shift.save()
             return render(request, "shifts/adddd.html", {
@@ -466,9 +483,6 @@ def deleteeee(request, id):
     return HttpResponseRedirect(reverse("dollsale"))
 
 
-
-
-
 # Sitter view
 
 def sitter(request):
@@ -555,6 +569,7 @@ def adi(request):
             new_pay_for = form.cleaned_data["pay_for"]
             new_amount_due = form.cleaned_data["amount_due"]
             new_amount_paid = form.cleaned_data["amount_paid"]
+            new_pending_amount = form.cleaned_data["pending_amount"]
             new_payment_date = form.cleaned_data["payment_date"]
             new_payment_method = form.cleaned_data["payment_method"]
 
@@ -565,6 +580,7 @@ def adi(request):
                 pay_for=new_pay_for,
                 amount_due=new_amount_due,
                 amount_paid=new_amount_paid,
+                pending_amount=new_pending_amount,
                 payment_date=new_payment_date,
                 payment_method=new_payment_method
                 
@@ -619,6 +635,7 @@ def addt(request):
             new_pay_for = form.cleaned_data["pay_for"]
             new_amount_due = form.cleaned_data["amount_due"]
             new_amount_paid = form.cleaned_data["amount_paid"]
+            new_pending_amount = form.cleaned_data["pending_amount"]
             new_payment_date = form.cleaned_data["payment_date"]
             new_payment_method = form.cleaned_data["payment_method"]
 
@@ -627,6 +644,7 @@ def addt(request):
                 pay_for=new_pay_for,
                 amount_due=new_amount_due,
                 amount_paid=new_amount_paid,
+                pending_amount=new_pending_amount,
                 payment_date=new_payment_date,
                 payment_method=new_payment_method
                 
@@ -670,7 +688,9 @@ def delet(request, id):
 
 
 def sitterpayment(request):
-    return render(request, "sitterpayments/sitterpayment.html", {"sitterpayments": SitterPayment.objects.all()} )
+    sitterpayments = SitterPayment.objects.all()
+
+    return render(request, "sitterpayments/sitterpayment.html", {"sitterpayments": sitterpayments} )
 
 def view_sitterpayment(request, id):
     sitterpayment = SitterPayment.objects.get(pk=id)
@@ -682,14 +702,12 @@ def addi(request):
         if form.is_valid():
             new_l_name = form.cleaned_data["l_name"]
             new_attendance_date = form.cleaned_data["attendance_date"]
-            new_number_of_babies = form.cleaned_data["number_of_babies"]
             new_payment_amount = form.cleaned_data["payment_amount"]
             
 
             new_sitterpayment = SitterPayment(
                 l_name=new_l_name,
                 attendance_date=new_attendance_date,
-                number_of_babies=new_number_of_babies,
                 payment_amount=new_payment_amount
                 
             )
@@ -727,3 +745,7 @@ def delee(request, id):
         sitterpayment = SitterPayment.objects.get(pk=id)
         sitterpayment.delete()
     return HttpResponseRedirect(reverse("sitterpayment"))
+
+def logout_view(request):
+    logout(request)
+    return render(request, "logged_out.html")

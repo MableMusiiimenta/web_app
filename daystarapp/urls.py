@@ -33,7 +33,6 @@ urlpatterns = [
     path("editt/<int:id>/", views.editt, name="editt"),
     path("deletee/<int:id>/", views.deletee, name="deletee"),
 
-
     path("babyfee/", views.babyfee, name="babyfee"),
     path("view_babyfee/<int:id>/", views.view_babyfee, name="view_babyfee"),
     path("adi/", views.adi, name="adi"),
@@ -85,7 +84,7 @@ urlpatterns = [
     path("addddd/", views.addddd, name="addddd"),
     path("editttt/<int:id>/", views.editttt, name="editttt"),
     path("deleteeee/<int:id>/", views.deleteeee, name="deleteeee"),
-
+    path("logged_out/", views.logout_view, name="logged_out"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

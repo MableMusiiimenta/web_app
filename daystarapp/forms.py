@@ -94,8 +94,9 @@ class SitterForm(forms.ModelForm):
 class At_schoolForm(forms.ModelForm):
     class Meta:
         model =At_school
-        fields = ["arrival_time", "bringer_name", "period_of_stay", "l_name", "departure_time", "taker_name", "comment"]
+        fields = ["first_name", "arrival_time", "bringer_name", "period_of_stay", "l_name", "departure_time", "taker_name", "comment"]
         labels = {
+            "first_name": "Name of Baby",
             "arrival_time": "Time of Arrival",
             "bringer_name": "Bringer's Name",
             "period_of_stay": "Period of Stay",
@@ -105,6 +106,7 @@ class At_schoolForm(forms.ModelForm):
             "comment": "Comment",
         }
         widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
             "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
             "bringer_name": forms.TextInput(attrs={"class": "form-control"}),
             "stay": forms.TextInput(attrs={"class": "form-control"}),
@@ -117,7 +119,7 @@ class At_schoolForm(forms.ModelForm):
 class BabyfeeForm(forms.ModelForm):
     class Meta:
         model = Babyfee
-        fields = ["l_name", "arrival_time", "departure_time", "pay_for", "amount_due", "amount_paid", "payment_date", "payment_method"]
+        fields = ["l_name", "arrival_time", "departure_time", "pay_for", "amount_due", "amount_paid", "pending_amount", "payment_date", "payment_method"]
         labels = {
             "l_name": "For",
             "arrival_time": "Time In",
@@ -125,6 +127,7 @@ class BabyfeeForm(forms.ModelForm):
             "pay_for": "Pay For",
             "amount_due": "Amount Due",
             "amount_paid": "Amount Paid",
+            "pending_amount": "Amount Pending",
             "payment_date": "Date of Payment",
             "payment_method": "Mode of Payment",
         
@@ -136,6 +139,7 @@ class BabyfeeForm(forms.ModelForm):
             "for": forms.TextInput(attrs={"class": "form-control"}),
             "due": forms.NumberInput(attrs={"class": "form-control"}),
             "paid": forms.NumberInput(attrs={"class": "form-control"}),
+            "pending": forms.NumberInput(attrs={"class": "form-control"}),
             "payment_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
             "method": forms.TextInput(attrs={"class": "form-control"}),
             
@@ -144,12 +148,13 @@ class BabyfeeForm(forms.ModelForm):
 class MonthlyfeeForm(forms.ModelForm):
     class Meta:
         model = Monthlyfee
-        fields = ["l_name", "pay_for", "amount_due", "amount_paid", "payment_date", "payment_method"]
+        fields = ["l_name", "pay_for", "amount_due", "amount_paid", "pending_amount", "payment_date", "payment_method"]
         labels = {
             "l_name": "For",
             "pay_for": "Pay For",
             "amount_due": "Amount Due",
             "amount_paid": "Amount Paid",
+            "pending_amount": "Pending Amount",
             "payment_date": "Date of Payment",
             "payment_method": "Mode of Payment",
         
@@ -159,6 +164,7 @@ class MonthlyfeeForm(forms.ModelForm):
             "for": forms.TextInput(attrs={"class": "form-control"}),
             "due": forms.NumberInput(attrs={"class": "form-control"}),
             "paid": forms.NumberInput(attrs={"class": "form-control"}),
+            "pending": forms.NumberInput(attrs={"class": "form-control"}),
             "payment_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
             "method": forms.TextInput(attrs={"class": "form-control"}),
             
@@ -168,18 +174,16 @@ class MonthlyfeeForm(forms.ModelForm):
 class SitterPaymentForm(forms.ModelForm):
     class Meta:
         model = SitterPayment
-        fields = ["l_name", "attendance_date", "number_of_babies", "payment_amount"]
+        fields = ["l_name", "attendance_date", "payment_amount"]
         labels = {
             "l_name": "Name of Sitter",
             "attendance_date": "Attendance Date",
-            "number_of_babies": "Number of Babies Attended To",
             "payment_amount": "Amount Paid to Sitter",
         } 
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "attendance_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
-            "number_of_babies": forms.NumberInput(attrs={"class": "form-control"}),
-            "payment_amount": forms.NumberInput(attrs={"class": "form-control"}),
+            "payment_amunt": forms.NumberInput(attrs={"class": "form-control"}),
         }
 class SupplyForm(forms.ModelForm):
     class Meta:

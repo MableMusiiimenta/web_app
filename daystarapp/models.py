@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 import re
 from django.core.validators import EmailValidator
+from decimal import Decimal
+from .validators import validate_ugandan_national_id
 # Create your models here.
 
 def validate_two_names(value):
@@ -82,7 +84,7 @@ class Sitter(models.Model):
     l_location = models.CharField(max_length=50, null=False, verbose_name="Location")
     dob = models.DateField(null=False, verbose_name="Date of Birth")
     nok = models.CharField(max_length=50, null=False, verbose_name="Next of Kin", validators=[validate_two_names])
-    nin = models.CharField(max_length=50, null=False, verbose_name="National ID Number")
+    nin = models.CharField(max_length=50, null=False, verbose_name="National ID Number", validators=[validate_ugandan_national_id])
     rec_name = models.CharField(max_length=50, null=False, verbose_name="Recommender's Name", validators=[validate_two_names])
     rec_contact = models.CharField(max_length=10, verbose_name="Recommender's Contact", validators=[validate_phone_number])
     religion = models.CharField(max_length=50, choices=RELIGION_CHOICES, null=False, verbose_name="Religious Affiliation")
@@ -94,15 +96,7 @@ class Sitter(models.Model):
     def __str__(self):
         return f"Sitter: {self.f_name} {self.l_name}"
     
-class Shift(models.Model):
-    l_name = models.ForeignKey(Sitter, on_delete=models.CASCADE)
-    date = models.DateField()
-    period = models.CharField(choices=STAY, max_length=50, null=False)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
 
-    def __str__(self):
-        return f"{self.l_name} - {self.date} ({self.start_time}-{self.end_time})"
 
     
 PAYMENT_METHOD = (
@@ -113,7 +107,7 @@ PAYMENT_METHOD = (
 )
 
 class At_school(models.Model):
-    l_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, verbose_name="Baby's Name")
+    first_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, verbose_name="Name of Baby")
     arrival_time = models.DateTimeField(verbose_name="Time of Arrival")
     bringer_name = models.CharField(max_length=50,null=False, verbose_name="Baby brought in by:", validators=[validate_two_names])
     period_of_stay = models.CharField(max_length=50, choices=STAY, null=False)
@@ -123,6 +117,20 @@ class At_school(models.Model):
     comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Comment")
     def __str__(self):
         return f"{self.l_name} - {self.arrival_time} - {self.departure_time}"
+    
+class Shift(models.Model):
+    l_name = models.ForeignKey(Sitter, on_delete=models.CASCADE)
+    date = models.DateField()
+    period = models.CharField(choices=STAY, max_length=50, null=False)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def count_assigned_babies(self):
+        return At_school.objects.filter(l_name=self.l_name).count()
+
+    def __str__(self):
+        return f"{self.l_name} - {self.date} ({self.start_time}-{self.end_time})"
+
 
 PAY_FOR = (
     ("Half-day", "Half-day"),
@@ -136,21 +144,36 @@ class Babyfee(models.Model):
     pay_for = models.CharField(max_length=20, null=False, choices=PAY_FOR, verbose_name="Pay For")
     amount_due = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Amount Due")
     amount_paid = models.CharField(verbose_name="Price", max_length=7, validators=[RegexValidator(r'^[0-9]+$')])
+    pending_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Amount Pending")
     payment_date = models.DateField(null=False, verbose_name="Payment Date")
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD, null=False, verbose_name="Mode of Payment")
 
-    def save(self, *args, **kwargs):
+    def calculate_amount_due(self):
         if self.pay_for == "Half-day":
-            self.amount_due = 10000
+            self.amount_due = 10000 * 1
         else:
-            self.amount_due = 15000
-        super(Babyfee, self).save(*args, **kwargs)
+            self.amount_due = 15000 * 1
+        return self.amount_due
+
+    def calculate_pending_amount(self):
+        return self.amount_due - Decimal(self.amount_paid)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Check if the instance is being created (not updated)
+            self.amount_due = self.calculate_amount_due()
+        self.pending_amount = self.calculate_pending_amount()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.l_name} - {self.amount_paid}"
+
   
 class Monthlyfee(models.Model):
     l_name = models.ForeignKey(Baby,max_length=100, on_delete=models.CASCADE, verbose_name="For Baby")
     pay_for = models.CharField(max_length=20, null=False, choices=PAY_FOR, verbose_name="Pay For")
     amount_due = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Amount Due")
     amount_paid = models.CharField(verbose_name="Price", max_length=7, validators=[RegexValidator(r'^[0-9]+$')])
+    pending_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Amount Pending")
     payment_date = models.DateField(null=False, verbose_name="Payment Date")
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD, null=False, verbose_name="Mode of Payment")
     
@@ -160,28 +183,34 @@ class Monthlyfee(models.Model):
         else:
             self.amount_due = 15000 * 30
         return self.amount_due
-    
 
-    
+    def calculate_pending_amount(self):
+        return self.amount_due - Decimal(self.amount_paid)
+
     def save(self, *args, **kwargs):
-        self.amount_due = self.calculate_amount_due()
+        if not self.pk:  # Check if the instance is being created (not updated)
+            self.amount_due = self.calculate_amount_due()
+        self.pending_amount = self.calculate_pending_amount()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.l_name} - {self.amount_paid}"
 
-
     
+
 class SitterPayment(models.Model):
     l_name = models.ForeignKey(Sitter, on_delete=models.CASCADE, verbose_name="Name of Sitter", max_length=50)
     attendance_date = models.DateField(null=False, verbose_name="Date")
-    number_of_babies = models.IntegerField(verbose_name="Number of Babies Attended To")
-    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Amount Paid to Sitter")
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Amount Paid to Sitter", null=True, blank=True)
 
     def calculate_payment_amount(self):
-        amount_per_baby = 3000
-        payment_amount = amount_per_baby * self.number_of_babies
-        return payment_amount
+        shift = self.l_name.shift_set.first()
+        if shift:
+            amount_per_baby = 3000
+            babies_assigned = shift.count_assigned_babies()
+            payment_amount = amount_per_baby * babies_assigned
+            return payment_amount
+        return 0
     
     def save(self, *args, **kwargs):
         self.payment_amount = self.calculate_payment_amount()
@@ -189,6 +218,8 @@ class SitterPayment(models.Model):
 
     def __str__(self):
         return f"{self.l_name} - {self.attendance_date}"
+
+    
 
 class Supply(models.Model):
     item = models.CharField(max_length=100, verbose_name="Item")
@@ -225,7 +256,6 @@ class DollSale(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, verbose_name="Total Amount")
 
     def save(self, *args, **kwargs):
-        # Calculate total_amount before saving
         if self.price and self.quantity_sold:
             self.total_amount = float(self.price) * self.quantity_sold
         super().save(*args, **kwargs)

@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LOGIN</title>
+  <title>LOGGED OUT</title>
     
   <link rel="icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
@@ -29,34 +29,31 @@
       padding-top: 5px;
       padding-bottom: 5px;
   }
-  
 
-    .clipped-button:hover{
+
+    button:hover{
     background-color: #2a9d8f;
     color: #e3f2fd;
     transform: scale(1.2)translateY(-10px);
   }
-    .clipped-button {
+    button {
       background-color: #2a9d8f; /* Green background */
       border: none; /* Remove border */
       color: #e3f2fd; /* White text */
-      padding: 15px 32px; /* Padding */
+      padding: 8px 22px; /* Padding */
       text-align: center; /* Center text */
       text-decoration: none; /* Remove underline */
       display: inline-block; /* Make it inline-block */
       font-size: 16px; /* Font size */
-      margin: 4px 2px; /* Margin */
       cursor: pointer; /* Cursor pointer */
       border-radius: 10px; /* Border radius */
       /* For webkit browsers */
-      -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      /* Standard clip-path */
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      -webkit-clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
       color: #e3f2fd;
       transition: 0.3s ease-in-out;
     }
 
-    
     .footer {
       position: fixed;
       bottom: 0;
@@ -92,19 +89,21 @@
   </header>
 </div>
 
+<section>
+    <div class="container" style="margin-top: 100px;">
+        <div style="margin-left: 50px;"><h2>You are currently logged out</h2></div>
+        <div><br><br><br><br><br>
+            <div style="margin-left: -315px;"> 
+                <a href="{% url 'admin_login' %}">
+                    <button>
+                        <h3>Click to log back in</h3>
+                    </button>
+                </a>    
+            </div>
 
-<section id="hero">
-  <div class="container">
-    <h2 style="color: #000; margin-top:150px;">Welcome to Your Daycare Management System. </h2>
-  </div>
-</section>
-
-  <section>
-    <div class="container">
-      <a href="{% url 'admin_login' %}" class="clipped-button">Click Here To Get Started</a>
+        </div>
     </div>
-  </section>
-</div>
+</section>
 
 <footer class="footer">
   <p class="copyright">
@@ -135,3 +134,4 @@ function carousel() {
 </body>
 
 </html>
+
