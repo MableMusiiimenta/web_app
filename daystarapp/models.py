@@ -219,21 +219,33 @@ class SitterPayment(models.Model):
     def __str__(self):
         return f"{self.l_name} - {self.attendance_date}"
 
-    
-
 class Supply(models.Model):
     item = models.CharField(max_length=100, verbose_name="Item")
-    qty_stocked = models.CharField(max_length=20, null=False, verbose_name="Quantity Stocked")
-    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, null=False, verbose_name="Cost Per Item")
+    qty_stocked = models.IntegerField(verbose_name="Quantity Stocked")
+    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cost Per Item")
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Cost")
-    date_stocked = models.DateField(null=False, verbose_name="Date Stocked")
-    qty_on_hand = models.CharField(max_length=20, verbose_name="Quantity In Stock")
-    consumed_today = models.CharField(max_length=20, null=False, verbose_name="Daily Comsumption")
-    qty_left = models.CharField(max_length=20, verbose_name="Quantity Left")
-    expiry_date = models.DateField(null=False, verbose_name="Expiry Date")
+    date_stocked = models.DateField(verbose_name="Date Stocked")
+    qty_on_hand = models.IntegerField(verbose_name="Quantity In Stock")
+    consumed_today = models.IntegerField(verbose_name="Daily Consumption")
+    qty_left = models.IntegerField(verbose_name="Quantity Left")
+    expiry_date = models.DateField(verbose_name="Expiry Date")
+
+    def save(self, *args, **kwargs):
+        # Calculate total cost
+        self.total_cost = self.qty_stocked * self.cost_per_item
+        
+        # Update quantity on hand
+        self.qty_on_hand += self.qty_stocked
+        
+        # Calculate quantity left
+        self.qty_left = self.qty_on_hand - self.consumed_today
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.item} - {self.qty_on_hand}"
+        return f"{self.item} - {self.qty_on_hand}"   
+
+
 
 class Doll(models.Model):
     name = models.CharField(max_length=100, verbose_name="Doll Name")
