@@ -11,6 +11,18 @@
     <link rel="icon" href="{% static 'images/badge.ico' %}" type="image/x-icon"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <style>
+      .register input:valid {
+        border: 1px solid green;
+      }
+      .register input:invalid {
+        border: 1px solid red;
+      }
+      .register select:valid {
+        border: 1px solid green;
+      }
+      .register select:invalid {
+        border: 1px solid red;
+      }
       .navbar{
         position: fixed;
         top: 0;

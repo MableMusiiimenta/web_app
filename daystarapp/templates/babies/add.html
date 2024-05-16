@@ -15,7 +15,7 @@
                         <i class="fa-solid fa-address-card fa-lg"></i>Baby Registration
                     </div>
                     <div class="card-body" style="background-color: #e3f2fd;">
-                     <form action="{% url 'add' %}" method="post">
+                     <form action="{% url 'add' %}" method="post" class="register">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button type="submit" class="btn" style="background-color: #2a9d8f; color:#e3f2fd;">Add</button>

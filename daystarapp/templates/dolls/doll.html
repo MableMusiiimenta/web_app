@@ -33,8 +33,12 @@
                                 <th scope="col">Doll Name</th>
                                 <th scope="col">Brand</th>
                                 <th scope="col">Color</th>
+                                <th scope="col">Quantity Stocked</th>
+                                <th scope="col">Date Stocked</th>
+                                <th scope="col">Buying Price</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity in Stock</th>
+                                <th scope="col">Quantity Left</th>
                                 <th scope="col">ACTIONS</th>
                             </tr>
                         </thead>
@@ -44,8 +48,12 @@
                                     <td>{{ doll.name }}</td>
                                     <td>{{ doll.brand }}</td>
                                     <td>{{ doll.color }}</td>
+                                    <td>{{doll.qty_stocked}}</td>
+                                    <td>{{doll.stock_date}}</td>
+                                    <td>{{doll.buying_price}}</td>
                                     <td>{{ doll.price }}</td>
                                     <td>{{ doll.qty_in_stock }}</td>
+                                    <td>{{doll.qty_left}}</td>
                                     <td>
                                         <button type="button" class="btn me-1" href="{% url 'view_doll' doll.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{doll.id}}" style="background-color: #2a9d8f; color:#e3f2fd; margin-bottom:3px;"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>
 
@@ -76,8 +84,12 @@
                                                     <li>Doll Name: <strong>{{ doll.name }}</strong></li>
                                                     <li>Brand: <strong>{{ doll.brand }}</strong></li>
                                                     <li>Color: <strong>{{ doll.color }}</strong></li>
+                                                    <li>Quantity Stocked: <strong>{{doll.qty_stocked}}</strong></li>
+                                                    <li>Stock Date: <strong>{{doll.stock_date}}</strong></li>
+                                                    <li>Buying Price: <strong>{{doll.buying_price}}</strong></li>
                                                     <li>Price: <strong>{{ doll.price }}</strong></li>
                                                     <li>Quantity in Stock: <strong>{{ doll.qty_in_stock }}</strong></li>
+                                                    <li>Quantity Left: <strong>{{doll.qty_left}}</strong></li>
                                                 </ul>
                                             </div>
                                             <div class="modal-footer">

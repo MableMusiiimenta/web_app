@@ -375,15 +375,23 @@ def adddds(request):
             new_name = form.cleaned_data["name"]
             new_brand = form.cleaned_data["brand"]
             new_color = form.cleaned_data["color"]
+            new_qty_stocked = form.cleaned_data["quantity_stocked"]
+            new_stock_date = form.cleaned_data["stock_date"]
+            new_buying_price = form.cleaned_data["buying_price"]
             new_price = form.cleaned_data["price"]
             new_qty_in_stock = form.cleaned_data["qty_in_stock"]
-          
+            new_qty_left = form.cleaned_data["qty_left"]
+
             new_doll = Doll(
                 name=new_name,
                 brand=new_brand,
                 color=new_color,
+                qty_stocked=new_qty_stocked,
+                stock_date=new_stock_date,
+                buying_price=new_buying_price,
                 price=new_price,
                 qty_in_stock=new_qty_in_stock,
+                qty_left=new_qty_left,
             )
             new_doll.save()
             return render(request, "dolls/adddds.html", {

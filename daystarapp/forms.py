@@ -215,20 +215,28 @@ class SupplyForm(forms.ModelForm):
 class DollForm(forms.ModelForm):
     class Meta:
         model = Doll
-        fields = ["name", "brand", "color", "price", "qty_in_stock"]
+        fields = ["name", "brand", "color", "qty_stocked", "stock_date", "buying_price","price", "qty_in_stock", "qty_left"]
         labels = {
             "name": "Doll Name",
             "brand": "Brand",
             "color": "Color",
-            "price": "Cost",
+            "qty_stocked": "Quantity Stocked",
+            "stock_date": "Stock Date",
+            "buying_price": "Buying Price",
+            "price": "Selling Price",
             "qty_in_stock": "Quantity in Stock",
+            "qty_left": "Quantity Left",
         }
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "brand": forms.TextInput(attrs={"class": "form-control"}),
             "color": forms.TextInput(attrs={"class": "form-control"}),
+            "qty_stocked": forms.NumberInput(attrs={"class": "form-control"}),
+            "stock_date": forms.DateInput(attrs={"class": "form-control", "type":"date"}),
+            "buying_price": forms.NumberInput(attrs={"class": "form-control"}),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
             "qty_in_stock": forms.NumberInput(attrs={"class": "form-control"}),
+            "qty_left": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
 class DollSaleForm(forms.ModelForm):

@@ -251,13 +251,19 @@ class Doll(models.Model):
     name = models.CharField(max_length=100, verbose_name="Doll Name")
     brand = models.CharField(max_length=100, null=False, verbose_name="Brand")
     color = models.CharField(max_length=50, null=False, verbose_name="Color")
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=False, verbose_name="Cost")
-    qty_in_stock = models.IntegerField(verbose_name="Quantity in Stock")
+    qty_stocked = models.IntegerField(null=False, default=None, verbose_name="Quantity Stocked")
+    stock_date = models.DateField(null=False, default=None, verbose_name="Stock Date")
+    buying_price = models.IntegerField(null=False, default=None, verbose_name="Buying Price")
+    price = models.DecimalField(max_digits=10, default=None, decimal_places=2, null=False, verbose_name="Selling Price")
+    qty_in_stock = models.IntegerField(verbose_name="Quantity in Stock", default=None)
+    qty_left = models.IntegerField(verbose_name="Quantity Left", default=None)
     
+    def save(self, *args, **kwargs):
+        self.qty_in_stock += self.qty_stocked
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.name
     
-from django.db import models
 
 class DollSale(models.Model):
     doll = models.ForeignKey(Doll, on_delete=models.CASCADE, verbose_name="Doll")
