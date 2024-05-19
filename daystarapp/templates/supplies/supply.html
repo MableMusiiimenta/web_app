@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="button">
                 <a href="{% url 'addds' %}">
-                    <button>Record Supplies</button>
+                    <button><i class="fa-solid fa-plus-circle fa-lg"></i>Record Supplies</button>
                 </a>
             </div>
             {% if supplies %}
@@ -45,6 +45,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th scope="col">Date</th>
                                 <th scope="col">Item</th>
                                 <th scope="col">Quantity Stocked</th>
                                 <th scope="col">Cost Per Item</th>
@@ -60,6 +61,7 @@
                         <tbody>
                             {% for supply in supplies %}
                                 <tr>
+                                    <td>{{supply.date_of_today}}</td>
                                     <td>{{ supply.item }}</td>
                                     <td>{{ supply.qty_stocked }}</td>
                                     <td>UGX.{{ supply.cost_per_item }}</td>
@@ -74,9 +76,9 @@
 
                                         <a class="btn me-1" href="{% url 'editts' supply.id %}" style="background-color: #2a9d8f; color:#e3f2fd;">
                                             <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                        </a>
+                                        </a><br>
 
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletees{{supply.id}}" style="color: #e3f2fd;">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletees{{supply.id}}" style="color: #e3f2fd; margin-top:4px;">
                                             <i class="fa-solid fa-trash fa-lg"></i>
                                         </button>
                                     </td>
@@ -96,6 +98,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <ul class="list-unstyled">
+                                                    <li>Date: <strong>{{supply.date_of_today}}</strong></li>
                                                     <li>Item: <strong>{{ supply.item }}</strong></li>
                                                     <li>Quantity Stocked: <strong>{{ supply.qty_stocked }}</strong></li>
                                                     <li>Cost Per Item: <strong>{{ supply.cost_per_item }}</strong></li>

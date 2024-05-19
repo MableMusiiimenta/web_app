@@ -220,24 +220,24 @@ class SitterPayment(models.Model):
         return f"{self.l_name} - {self.attendance_date}"
 
 class Supply(models.Model):
+    date_of_today = models.DateField(verbose_name="Date")
     item = models.CharField(max_length=100, verbose_name="Item")
-    qty_stocked = models.IntegerField(verbose_name="Quantity Stocked")
-    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cost Per Item")
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Cost")
-    date_stocked = models.DateField(verbose_name="Date Stocked")
+    qty_stocked = models.IntegerField(verbose_name="Quantity Stocked", default=0)
+    cost_per_item = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cost Per Item", default=0)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Cost", null=True, blank=True)
+    date_stocked = models.DateField(verbose_name="Date Stocked", null=True, blank=True)
     qty_on_hand = models.IntegerField(verbose_name="Quantity In Stock")
-    consumed_today = models.IntegerField(verbose_name="Daily Consumption")
-    qty_left = models.IntegerField(verbose_name="Quantity Left")
+    consumed_today = models.IntegerField(verbose_name="Consumed Today",default=0,null=True, blank=True)
+    qty_left = models.IntegerField(verbose_name="Quantity Left", null=True, blank=True)
     expiry_date = models.DateField(verbose_name="Expiry Date")
 
     def save(self, *args, **kwargs):
-        # Calculate total cost
-        self.total_cost = self.qty_stocked * self.cost_per_item
+
+        self.total_cost = int(self.qty_stocked) * float(self.cost_per_item)
         
-        # Update quantity on hand
         self.qty_on_hand += self.qty_stocked
         
-        # Calculate quantity left
+        
         self.qty_left = self.qty_on_hand - self.consumed_today
 
         super().save(*args, **kwargs)
@@ -251,7 +251,7 @@ class Doll(models.Model):
     name = models.CharField(max_length=100, verbose_name="Doll Name")
     brand = models.CharField(max_length=100, null=False, verbose_name="Brand")
     color = models.CharField(max_length=50, null=False, verbose_name="Color")
-    qty_stocked = models.IntegerField(null=False, default=None, verbose_name="Quantity Stocked")
+    qty_stocked = models.IntegerField(null=True, blank=True, verbose_name="Quantity Stocked", default=0)
     stock_date = models.DateField(null=False, default=None, verbose_name="Stock Date")
     buying_price = models.IntegerField(null=False, default=None, verbose_name="Buying Price")
     price = models.DecimalField(max_digits=10, default=None, decimal_places=2, null=False, verbose_name="Selling Price")

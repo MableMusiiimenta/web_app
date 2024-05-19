@@ -2,9 +2,12 @@
 
 {% block body %}
 <div class="container-fluid" style="padding-top: 80px;">
-    <h3 class="m-4" style="text-align: center; font-family:serif;">Daily Records</h3>
+    <h3 class="m-4" style="text-align: center; font-family:serif;">Babies Brought In</h3>
     <div class="row">
         <div class="col-12">
+            <div class="button">
+                <a href="{% url 'addd' %}"><button><i class="fa-solid fa-plus-circle fa-lg"></i>Record Baby</button></a>
+            </div>
             {% if at_schools %}
                 <div class="table-responsive">
                     <style>
@@ -18,9 +21,22 @@
                             text-align: left;
                             border-bottom: 1px solid #DDD;
                         }
+                        th{
+                            font-weight: 700;
+                        }
 
                         tr:hover {
                             background-color: #cbf3f0;
+                        }
+                        .button{
+                            margin-left: 1700px;
+                            margin-bottom: 5px;
+                        }
+                        button{
+                            background-color:#2a9d8f;
+                            color: #e3f2fd;
+                            border-radius: 7px;
+                            border-style: none;
                         }
                     </style>
                     <table>
@@ -54,9 +70,9 @@
 
                                         <a class="btn me-1" href="{% url 'editt' at_school.id %}" style="background-color: #2a9d8f; color:#e3f2fd;">
                                             <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                        </a>
+                                        </a><br>
 
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletee{{at_school.id}}" style="color: #e3f2fd;">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletee{{at_school.id}}" style="color: #e3f2fd; margin-top: 4px;">
                                             <i class="fa-solid fa-trash fa-lg"></i>
                                         </button>
                                     </td>

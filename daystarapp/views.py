@@ -303,6 +303,7 @@ def addds(request):
     if request.method == "POST":
         form = SupplyForm(request.POST)
         if form.is_valid():
+            new_date_of_today = form.cleaned_data["date_of_today"]
             new_item = form.cleaned_data["item"]
             new_qty_stocked = form.cleaned_data["qty_stocked"]
             new_cost_per_item = form.cleaned_data["cost_per_item"]
@@ -315,6 +316,7 @@ def addds(request):
        
 
             new_supply = Supply(
+                date_of_today=new_date_of_today,
                 item=new_item,
                 qty_stocked=new_qty_stocked,
                 cost_per_item=new_cost_per_item,

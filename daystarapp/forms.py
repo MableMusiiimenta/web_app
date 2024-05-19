@@ -188,8 +188,9 @@ class SitterPaymentForm(forms.ModelForm):
 class SupplyForm(forms.ModelForm):
     class Meta:
         model = Supply
-        fields = ["item", "qty_stocked", "cost_per_item", "total_cost", "date_stocked", "qty_on_hand", "consumed_today", "qty_left", "expiry_date"]
+        fields = ["date_of_today", "item", "qty_stocked", "cost_per_item", "total_cost", "date_stocked", "qty_on_hand", "consumed_today", "qty_left", "expiry_date"]
         labels = {
+            "date_of_today": "Date",
             "item": "Item",
             "qty_stocked": "Quantity Stocked",
             "cost_per_item": "Cost Per Item",
@@ -201,6 +202,7 @@ class SupplyForm(forms.ModelForm):
             "expiry_date": "Expiry Date",
         }
         widgets = {
+            "date_of_today": forms.DateInput(attrs={"class": "form-control"}),
             "item": forms.TextInput(attrs={"class": "form-control"}),
             "stocked": forms.NumberInput(attrs={"class": "form-control"}),
             "cost_per_item": forms.TextInput(attrs={"class": "form-control", "type": "number"}),

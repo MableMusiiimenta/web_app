@@ -5,6 +5,13 @@
     <h3 class="m-4" style="text-align: center; font-family:serif;">Dollsale Records</h3>
     <div class="row">
         <div class="col-12">
+            <div class="button">
+                <a href="{% url 'addddd' %}">
+                    <button>
+                        <i class="fa-solid fa-plus-circle fa-lg"></i>Add Record
+                    </button>
+                </a>
+            </div>
             {% if dollsales %}
                 <div class="table-responsive">
                     <style>
@@ -18,9 +25,22 @@
                         text-align: left;
                         border-bottom: 1px solid #DDD;
                     }
+                    th{
+                        font-weight: 700;
+                    }
 
                     tr:hover {
                         background-color: #cbf3f0;
+                    }
+                    .button{
+                        margin-left: 1700px;
+                        margin-bottom: 5px;
+                    }
+                    button{
+                        background-color:#2a9d8f;
+                        color: #e3f2fd;
+                        border-radius: 7px;
+                        border-style: none;
                     }
                     </style>
                     <table>
@@ -49,9 +69,9 @@
 
                                         <a class="btn me-1" href="{% url 'editttt' dollsale.id %}" style="background-color: #2a9d8f; color:#e3f2fd;">
                                             <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                        </a>
+                                        </a><br>
 
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteeee{{dollsale.id}}" style="color: #e3f2fd;">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteeee{{dollsale.id}}" style="color: #e3f2fd; margin-top:4px;">
                                             <i class="fa-solid fa-trash fa-lg"></i>
                                         </button>
                                     </td>
