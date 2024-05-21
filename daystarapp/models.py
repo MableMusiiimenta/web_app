@@ -7,6 +7,7 @@ import re
 from django.core.validators import EmailValidator
 from decimal import Decimal
 from .validators import validate_ugandan_national_id
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 def validate_two_names(value):
@@ -46,11 +47,18 @@ GENDER = (
     ('Male', 'Male'),
 )
 
+def validate_unique_value(value):
+    if Baby.objects.filter(baby_number=value).exists():
+        raise ValidationError(
+            _('This value must be unique.'),
+            code='unique'
+        )
+    return value
 
 class Baby(models.Model):
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
-    baby_number = models.CharField(max_length=4,null=False, default=0, validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
+    baby_number = models.CharField(max_length=4,null=False, default=0, unique=True,validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
     gender = models.CharField(max_length=10, null=False, choices=GENDER)
     age = models.PositiveIntegerField()
     location = models.CharField(max_length=50, null=False)
@@ -78,10 +86,22 @@ AVAILABILITY_STATUS = (
     ('Off Duty', 'Off Duty'),
 )
 
+def validate_unique_value(value):
+    if Sitter.objects.filter(s_number=value).exists():
+        raise ValidationError(
+            _('This value must be unique.'),
+            code='unique'
+        )
+    return value
+
+def validate_kabalagala_location(value):
+    if value != "Kabalagala":
+        raise ValidationError("Sitters must reside in Kabalagala.")
+
 class Sitter(models.Model):
     f_name = models.CharField(max_length=50, null=False, verbose_name="First Name")
     l_name = models.CharField(max_length=50, null=False, verbose_name="Last Name")
-    l_location = models.CharField(max_length=50, null=False, verbose_name="Location")
+    l_location = models.CharField(max_length=50, null=False, verbose_name="Location", validators=[validate_kabalagala_location])
     dob = models.DateField(null=False, verbose_name="Date of Birth")
     nok = models.CharField(max_length=50, null=False, verbose_name="Next of Kin", validators=[validate_two_names])
     nin = models.CharField(max_length=50, null=False, verbose_name="National ID Number", validators=[validate_ugandan_national_id])
@@ -89,7 +109,7 @@ class Sitter(models.Model):
     rec_contact = models.CharField(max_length=10, verbose_name="Recommender's Contact", validators=[validate_phone_number])
     religion = models.CharField(max_length=50, choices=RELIGION_CHOICES, null=False, verbose_name="Religious Affiliation")
     educ_level = models.CharField(max_length=50, choices=EDUCATION_CHOICES, null=False, verbose_name="Level of Education")
-    s_number = models.CharField(max_length=4, null=False, verbose_name="Sitter Number",validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
+    s_number = models.CharField(max_length=4, null=False, unique=True, verbose_name="Sitter Number",validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
     s_contact = models.CharField(max_length=10, null=False, verbose_name="Sitter's Contact", validators=[validate_phone_number])
 
 
