@@ -58,7 +58,6 @@ def validate_unique_value(value):
 class Baby(models.Model):
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
-    baby_number = models.CharField(max_length=4,null=False, default=0, unique=True,validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
     gender = models.CharField(max_length=10, null=False, choices=GENDER)
     age = models.PositiveIntegerField()
     location = models.CharField(max_length=50, null=False)
@@ -97,19 +96,27 @@ def validate_unique_value(value):
 def validate_kabalagala_location(value):
     if value != "Kabalagala":
         raise ValidationError("Sitters must reside in Kabalagala.")
+    
+def clean_dob(value):
+    if value:
+        if value >= timezone.now().date():
+            raise ValidationError("Date of birth should be in the past.")
+        age = timezone.now().date().year - value.year - ((timezone.now().date().month, timezone.now().date().day) < (value.month, value.day))
+        if age < 18:
+            raise ValidationError("You must be at least 18 years old to register.")
+
 
 class Sitter(models.Model):
     f_name = models.CharField(max_length=50, null=False, verbose_name="First Name")
     l_name = models.CharField(max_length=50, null=False, verbose_name="Last Name")
     l_location = models.CharField(max_length=50, null=False, verbose_name="Location", validators=[validate_kabalagala_location])
-    dob = models.DateField(null=False, verbose_name="Date of Birth")
+    dob = models.DateField(null=False, verbose_name="Date of Birth", validators=[clean_dob])
     nok = models.CharField(max_length=50, null=False, verbose_name="Next of Kin", validators=[validate_two_names])
     nin = models.CharField(max_length=50, null=False, verbose_name="National ID Number", validators=[validate_ugandan_national_id])
     rec_name = models.CharField(max_length=50, null=False, verbose_name="Recommender's Name", validators=[validate_two_names])
     rec_contact = models.CharField(max_length=10, verbose_name="Recommender's Contact", validators=[validate_phone_number])
     religion = models.CharField(max_length=50, choices=RELIGION_CHOICES, null=False, verbose_name="Religious Affiliation")
     educ_level = models.CharField(max_length=50, choices=EDUCATION_CHOICES, null=False, verbose_name="Level of Education")
-    s_number = models.CharField(max_length=4, null=False, unique=True, verbose_name="Sitter Number",validators=[validate_two_digit_integer, RegexValidator(regex=r'^\d{1,2}$', message='Value must be a two-digit integer')])
     s_contact = models.CharField(max_length=10, null=False, verbose_name="Sitter's Contact", validators=[validate_phone_number])
 
 

@@ -90,6 +90,7 @@ def search_another_model(request):
 
 @login_required
 def baby(request):
+    success = request.GET.get('success', False)
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
 
 
@@ -97,14 +98,13 @@ def view_baby(request, id):
     baby = Baby.objects.get(pk=id)
     return HttpResponseRedirect(reverse("baby"))
 
-
 def add(request):
     if request.method == "POST":
         form = BabyForm(request.POST)
         if form.is_valid():
             new_first_name = form.cleaned_data["first_name"]
             new_last_name = form.cleaned_data["last_name"]
-            new_baby_number = form.cleaned_data["baby_number"]
+            new_gender = form.cleaned_data["gender"]
             new_age = form.cleaned_data["age"]
             new_location = form.cleaned_data["location"]
             new_parent_name = form.cleaned_data["parent_name"]
@@ -114,17 +114,14 @@ def add(request):
             new_baby = Baby(
                 first_name=new_first_name,
                 last_name=new_last_name,
-                baby_number=new_baby_number,
+                gender=new_gender,
                 age=new_age,
                 location=new_location,
                 parent_name=new_parent_name,
                 parent_contact=new_parent_contact,
             )
             new_baby.save()
-            return render(request, "babies/add.html", {
-                "form": BabyForm(),
-                "success": True
-            })
+            return redirect(reverse("baby") + "?success=true")# Redirect to the success URL
     else:
         form = BabyForm()
 
@@ -516,30 +513,30 @@ def adds(request):
         if form.is_valid():
             new_f_name = form.cleaned_data["f_name"]
             new_l_name = form.cleaned_data["l_name"]
-            new_l_location = form.cleaned_data["l_location"]
+            new_dob = form.cleaned_data["dob"]
+            new_nok = form.cleaned_data["nok"]
+            new_nin = form.cleaned_data["nin"]
             new_rec_name = form.cleaned_data["rec_name"]
             new_rec_contact = form.cleaned_data["rec_contact"]
             new_religion = form.cleaned_data["religion"]
             new_educ_level = form.cleaned_data["educ_level"]
-            new_s_number = form.cleaned_data["s_number"]
             new_s_contact = form.cleaned_data["s_contact"]
 
             new_sitter = Sitter(
                 f_name=new_f_name,
                 l_name=new_l_name,
-                l_location=new_l_location,
+                dob=new_dob,
+                nok=new_nok,
+                nin=new_nin,
                 rec_name=new_rec_name,
                 rec_contact=new_rec_contact,
                 religion=new_religion,
                 educ_level=new_educ_level,
-                s_number=new_s_number,
                 s_contact=new_s_contact
             )
             new_sitter.save()
-            return render(request, "sitters/adds.html", {
-                "form": SitterForm(),
-                "success": True
-            })
+            return redirect("sitter")
+          
     else:
         form = SitterForm()
 

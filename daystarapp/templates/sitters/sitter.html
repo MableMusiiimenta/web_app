@@ -66,7 +66,7 @@
                                 <tr>
                                     <td>{{ sitter.f_name }}</td>
                                     <td>{{ sitter.l_name }}</td>
-                                    <td>{{ sitter.l_location }}</td>
+                                    <td> Kabalagala </td>
                                     <td>{{ sitter.dob }}</td>
                                     <td>{{ sitter.nok }}</td>
                                     <td>{{ sitter.nin }}</td>
@@ -74,7 +74,7 @@
                                     <td>{{ sitter.rec_contact }}</td>
                                     <td>{{ sitter.religion }}</td>
                                     <td>{{ sitter.educ_level }}</td>
-                                    <td>{{ sitter.s_number }}</td>
+                                    <td>DDS.0{{ sitter.id }}</td>
                                     <td>{{ sitter.s_contact }}</td>
                                     <td>
                                         <button type="button" class="btn me-1" href="{% url 'view_sitter' sitter.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{sitter.id}}" style="background-color: #2a9d8f; color:#e3f2fd;  margin-bottom:3px;"><i class="fa-solid fa-circle-info fa-lg"></i></button><br>

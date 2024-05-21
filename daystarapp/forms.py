@@ -33,11 +33,10 @@ class Admin_loginForm(forms.ModelForm):
 class BabyForm(forms.ModelForm):
     class Meta:
         model = Baby
-        fields = ["first_name", "last_name", "baby_number", "gender", "age", "location", "parent_name", "parent_contact"]
+        fields = ["first_name", "last_name", "gender", "age", "location", "parent_name", "parent_contact"]
         labels = {
             "first_name": "First Name",
             "last_name": "Last Name",
-            "baby_number": "Baby Number",
             "gender": "Gender",
             "age": "Age",
             "location": "Location",
@@ -48,7 +47,6 @@ class BabyForm(forms.ModelForm):
         widgets = {
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "baby_number": forms.NumberInput(attrs={"class": "form-control"}),
             "gendr": forms.TextInput(attrs={"class": "form-control"}),
             "age": forms.NumberInput(attrs={"class": "form-control"}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
@@ -61,11 +59,10 @@ class BabyForm(forms.ModelForm):
 class SitterForm(forms.ModelForm):
     class Meta:
         model = Sitter
-        fields = ["f_name", "l_name", "l_location", "dob", "nok", "nin", "rec_name", "rec_contact", "religion", "educ_level", "s_number", "s_contact"]
+        fields = ["f_name", "l_name", "dob", "nok", "nin", "rec_name", "rec_contact", "religion", "educ_level", "s_contact"]
         labels = {
             "f_name": "First Name",
             "l_name": "Last Name",
-            "l_location": "Location",
             "dob": "Date of Birth",
             "nok": "Next of Kin",
             "nin": "National ID Number",
@@ -73,13 +70,11 @@ class SitterForm(forms.ModelForm):
             "rec_contact": "Recommender's Phone Number",
             "religion": "Religion",
             "educ_level": "Level of Education",
-            "s_number": "Sitter Number",
             "s_contact": "Sitter's Phone Number",
         } 
         widgets = {
             "f_name": forms.TextInput(attrs={"class": "form-control"}),
             "l_name": forms.TextInput(attrs={"class": "form-control"}),
-            "l_location": forms.TextInput(attrs={"class": "form-control"}),
             "dob": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "nok": forms.TextInput(attrs={"class": "form-control"}),
             "nin": forms.TextInput(attrs={"class": "form-control"}),
@@ -87,7 +82,6 @@ class SitterForm(forms.ModelForm):
             "contact": forms.TextInput(attrs={"class": "form-control", "type":"number"}),
             "reli": forms.TextInput(attrs={"class": "form-control"}),
             "educ": forms.TextInput(attrs={"class": "form-control"}),
-            "number": forms.NumberInput(attrs={"class": "form-control"}),
             "contact": forms.TextInput(attrs={"class": "form-control", "type":"number"}),
         }
 

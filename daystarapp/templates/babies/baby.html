@@ -3,6 +3,12 @@
 {% block body %}
 <div class="container-fluid" style="padding-top: 80px;">
     <h3 class="m-4" style="text-align: center; font-family:serif;">All Babies</h3>
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            New baby was added successfully
+            <a href="{% url 'baby' %}" class="alert-link">Go to Home Page.</a>
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col-12">
             <div class="button">
@@ -58,7 +64,7 @@
                                 <tr>
                                     <td>{{ baby.first_name }}</td>
                                     <td>{{ baby.last_name }}</td>
-                                    <td>{{ baby.baby_number }}</td>
+                                    <td>DDB.0{{ baby.id }}</td>
                                     <td>{{ baby.gender }}</td>
                                     <td>{{ baby.age }}</td>
                                     <td>{{ baby.location }}</td>
