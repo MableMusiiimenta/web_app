@@ -87,6 +87,8 @@ def search_another_model(request):
     query = request.GET.get('q', '')  # Get the search query from the request
     results = Sitter.objects.filter(field__icontains=query) |  Sitter.objects.filter(last_name__icontains=query)  # Adjust filtering criteria based on your model
     return render(request, 'search_another_model.html', {'results': results, 'query': query})
+
+@login_required
 def baby(request):
     return render(request, "babies/baby.html", {"babies": Baby.objects.all()} )
 
@@ -153,7 +155,7 @@ def delete(request, id):
         baby.delete()
     return HttpResponseRedirect(reverse("baby"))
 # At_school
-
+@login_required
 def at_school(request):
     return render(request, "at_schools/at_school.html", {"at_schools": At_school.objects.all()} )
 
@@ -223,6 +225,8 @@ def deletee(request, id):
 
 
 #shift view
+
+@login_required
 def shift(request):
     shifts = Shift.objects.all()
 
@@ -290,7 +294,7 @@ def deleteee(request, id):
         shift.delete()
     return HttpResponseRedirect(reverse("shift"))
 
-
+@login_required
 def supply(request):
     return render(request, "supplies/supply.html", {"supplies": Supply.objects.all()} )
 
@@ -362,6 +366,8 @@ def deletees(request, id):
         supply.delete()
     return HttpResponseRedirect(reverse("supply"))
 
+
+@login_required
 def doll(request):
     return render(request, "dolls/doll.html", {"dolls": Doll.objects.all()} )
 
@@ -430,6 +436,8 @@ def deleteees(request, id):
         doll.delete()
     return HttpResponseRedirect(reverse("doll"))
 
+
+@login_required
 def dollsale(request):
     return render(request, "dollsales/dollsale.html", {"dollsales": DollSale.objects.all()} )
 
@@ -494,7 +502,7 @@ def deleteeee(request, id):
 
 
 # Sitter view
-
+@login_required
 def sitter(request):
     return render(request, "sitters/sitter.html", {"sitters": Sitter.objects.all()} )
 
@@ -562,6 +570,8 @@ def deletes(request, id):
         sitter.delete()
     return HttpResponseRedirect(reverse("sitter"))
 
+
+@login_required
 def babyfee(request):
     return render(request, "babyfees/babyfee.html", {"babyfees": Babyfee.objects.all()} )
 
@@ -630,6 +640,7 @@ def dele(request, id):
         babyfee.delete()
     return HttpResponseRedirect(reverse("babyfee"))
 
+@login_required
 def monthlyfee(request):
     return render(request, "monthlyfees/monthlyfee.html", {"monthlyfees": Monthlyfee.objects.all()} )
 
@@ -696,7 +707,7 @@ def delet(request, id):
 
 
 
-
+@login_required
 def sitterpayment(request):
     sitterpayments = SitterPayment.objects.all()
 
