@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-x-e)jrf4#g(9j3^yp%$d!)@2kz-%^n!&m3&)$bcb-lm)wjm8s!"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['MableMusiimenta.pythonanywhere.com']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "daystarapp",
     "bootstrap_datepicker_plus",
+    "bootstrap5"
 ]
 LOGIN_URL = '/admin_login/'
 
